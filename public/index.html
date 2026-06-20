@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OKC → Ouray Road Trip · June 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<style>
+  :root {
+    --bg: #FAF7F0;
+    --paper: #FFFFFF;
+    --ink: #1A1A1A;
+    --ink-soft: #4A4A4A;
+    --rule: #E5DFD2;
+    --highway: #C73E1D;
+    --mountain: #1B3A4B;
+    --pine: #3C5C3D;
+    --sun: #D89B4A;
+    --subtle: #6B7280;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    padding: 24px 16px 80px;
+  }
+
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    border-top: 2px solid var(--ink);
+    border-bottom: 1px solid var(--rule);
+    padding: 32px 0 28px;
+    margin-bottom: 32px;
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--highway);
+    font-weight: 500;
+    margin-bottom: 16px;
+  }
+
+  .title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 500;
+    font-size: clamp(40px, 9vw, 68px);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .title .arrow {
+    color: var(--highway);
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  .dates {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-top: 14px;
+    letter-spacing: 0.02em;
+  }
+
+  /* ===== MAP ===== */
+  .map-wrap {
+    margin: 28px 0 0;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 16px 16px 14px;
+  }
+
+  .map-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--subtle);
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .map-legend {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    font-size: 9px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1.5px solid #1A1A1A;
+    display: inline-block;
+  }
+
+  .legend-dot.start { background: var(--highway); }
+  .legend-dot.overnight { background: var(--mountain); }
+  .legend-dot.destination { background: var(--sun); width: 12px; height: 12px; }
+  .legend-dot.playground { background: var(--pine); border-color: #FFFFFF; }
+  .legend-dot.return { background: #3E7C5A; }
+
+  #trip-map {
+    width: 100%;
+    height: 380px;
+    background: #E8E3D9;
+  }
+
+  @media (max-width: 520px) {
+    #trip-map { height: 300px; }
+  }
+
+  /* Leaflet style overrides */
+  .leaflet-container {
+    font-family: 'Inter', sans-serif;
+    background: #E8E3D9;
+  }
+  .leaflet-popup-content-wrapper {
+    border-radius: 2px;
+    border: 1px solid var(--ink);
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+  .leaflet-popup-content {
+    margin: 10px 14px;
+    font-size: 13px;
+  }
+  .leaflet-popup-content strong {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 15px;
+    display: block;
+    margin-bottom: 2px;
+  }
+  .leaflet-popup-content small {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--subtle);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .leaflet-popup-tip {
+    background: var(--paper);
+    border: 1px solid var(--ink);
+  }
+
+  /* ===== SECTION HEADERS ===== */
+  .section {
+    margin-top: 56px;
+  }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--highway);
+    font-weight: 500;
+  }
+
+  .section-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 500;
+    font-size: 24px;
+    letter-spacing: -0.01em;
+  }
+
+  /* ===== CREW ===== */
+  .crew-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+
+  .crew-card {
+    background: var(--paper);
+    padding: 18px 20px;
+  }
+
+  .crew-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--pine);
+    margin-bottom: 6px;
+  }
+
+  .crew-name {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.3;
+  }
+
+  /* ===== BOOKINGS ===== */
+  .booking {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 22px 24px;
+    margin-bottom: 14px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+
+  .booking.tbd {
+    border-color: var(--sun);
+    background: #FFFAF0;
+  }
+
+  .booking-status {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--pine);
+    font-weight: 500;
+    padding-top: 2px;
+    white-space: nowrap;
+  }
+
+  .booking.tbd .booking-status {
+    color: var(--sun);
+  }
+
+  .booking-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+
+  .booking-sub {
+    color: var(--ink-soft);
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+
+  .booking-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
+
+  .meta-row {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .meta-label {
+    color: var(--subtle);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .meta-val {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  /* ===== ITINERARY ===== */
+  .day {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 24px 24px 20px;
+    margin-bottom: 16px;
+  }
+
+  .day-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+  }
+
+  .day-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--highway);
+  }
+
+  .day-route {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 1.2;
+    margin: 4px 0 14px;
+  }
+
+  .day-route .arrow {
+    color: var(--highway);
+    font-style: italic;
+    margin: 0 4px;
+  }
+
+  .day-stats {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--subtle);
+    letter-spacing: 0.03em;
+    padding-bottom: 14px;
+    margin-bottom: 14px;
+    border-bottom: 1px dashed var(--rule);
+  }
+
+  .stop {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 16px;
+    padding: 10px 0;
+    border-bottom: 1px dotted var(--rule);
+  }
+
+  .stop:last-child {
+    border-bottom: none;
+  }
+
+  .stop-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--mountain);
+    font-weight: 500;
+    padding-top: 2px;
+  }
+
+  .stop-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .stop-place {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--ink);
+  }
+
+  .stop-note {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.4;
+  }
+
+  .stop.arrive .stop-place {
+    color: var(--pine);
+  }
+
+  .stop.depart .stop-place {
+    color: var(--highway);
+  }
+
+  /* ===== OURAY STAY ===== */
+  .ouray-stay {
+    background: var(--mountain);
+    color: #F5F1E8;
+    padding: 28px 24px;
+    margin-bottom: 16px;
+    text-align: center;
+    border: 1px solid var(--mountain);
+  }
+
+  .ouray-stay .day-num {
+    color: var(--sun);
+  }
+
+  .ouray-stay .day-route {
+    color: #F5F1E8;
+    margin-top: 8px;
+  }
+
+  .ouray-stay .ouray-dates {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: rgba(245, 241, 232, 0.7);
+    letter-spacing: 0.05em;
+    margin-top: 8px;
+  }
+
+  .ouray-stay .ouray-addr {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(245, 241, 232, 0.2);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: rgba(245, 241, 232, 0.9);
+  }
+
+  /* ===== ELEVATION (now at bottom) ===== */
+  .elevation {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 24px 20px 18px;
+  }
+
+  .elevation svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* ===== PIT STOPS ===== */
+  .pitstop {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--pine);
+    margin-bottom: 12px;
+  }
+
+  .pitstop summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .pitstop summary::-webkit-details-marker { display: none; }
+
+  .pitstop summary:hover .pitstop-name { color: var(--highway); }
+
+  .pitstop-leg {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--pine);
+    margin-bottom: 6px;
+  }
+
+  .pitstop-name {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 19px;
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--ink);
+    transition: color 0.15s;
+  }
+
+  .pitstop-addr {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--subtle);
+    letter-spacing: 0.03em;
+    margin-top: 6px;
+  }
+
+  .pitstop-chevron {
+    color: var(--subtle);
+    font-size: 14px;
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .pitstop[open] .pitstop-chevron { transform: rotate(180deg); }
+
+  .pitstop-body {
+    padding: 0 20px 18px;
+  }
+
+  .pitstop-note {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+
+  .pitstop-link {
+    display: inline-block;
+    margin-top: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--highway);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 1px;
+    transition: border-color 0.15s;
+  }
+
+  .pitstop-link:hover { border-bottom-color: var(--highway); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .pitstop[open] .pitstop-body {
+      animation: pitstop-reveal 0.25s ease-out;
+    }
+  }
+
+  @keyframes pitstop-reveal {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== FOOTER ===== */
+  .footer {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 2px solid var(--ink);
+    text-align: center;
+  }
+
+  .footer-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin: 24px 0;
+  }
+
+  .stat-num {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 32px;
+    font-weight: 500;
+    color: var(--highway);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--subtle);
+    margin-top: 6px;
+  }
+
+  .footer-note {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-top: 20px;
+    font-style: italic;
+  }
+
+  .page-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin: 28px 0 4px;
+  }
+  .page-nav a {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--paper);
+    background: var(--pine);
+    padding: 10px 16px;
+    border-radius: 4px;
+    transition: opacity 0.15s ease;
+  }
+  .page-nav a:hover { opacity: 0.85; }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 520px) {
+    .crew-grid {
+      grid-template-columns: 1fr;
+    }
+    .booking {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .stop {
+      grid-template-columns: 65px 1fr;
+      gap: 12px;
+    }
+    .footer-stats {
+      gap: 16px;
+    }
+    .stat-num {
+      font-size: 24px;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .elevation-path {
+      stroke-dasharray: 1200;
+      stroke-dashoffset: 1200;
+      animation: draw 2.5s ease-out 0.3s forwards;
+    }
+  }
+
+  @keyframes draw {
+    to { stroke-dashoffset: 0; }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- HERO -->
+    <header class="hero">
+      <div class="eyebrow">Family Road Trip · 2026</div>
+      <h1 class="title">OKC <span class="arrow">→</span><br>Ouray</h1>
+      <div class="dates">JUNE 23 – JUNE 29 · 7 DAYS · 4 STATES</div>
+
+      <div class="map-wrap">
+        <div class="map-label">
+          <span>The Route · Tap Markers for Detail</span>
+          <span class="map-legend">
+            <span class="legend-item"><span class="legend-dot start"></span>Stop</span>
+            <span class="legend-item"><span class="legend-dot overnight"></span>Overnight</span>
+            <span class="legend-item"><span class="legend-dot destination"></span>Ouray</span>
+            <span class="legend-item"><span class="legend-dot return"></span>Return leg</span>
+            <span class="legend-item"><span class="legend-dot playground"></span>Playground</span>
+          </span>
+        </div>
+        <div id="trip-map"></div>
+      </div>
+    </header>
+
+    <!-- CREW -->
+    <section class="section" style="margin-top: 8px;">
+      <div class="section-head">
+        <span class="section-num">01</span>
+        <h2 class="section-title">The Crew</h2>
+      </div>
+      <div class="crew-grid">
+        <div class="crew-card">
+          <div class="crew-label">Vehicle 1</div>
+          <div class="crew-name">Nick + Hallie<br>+ Norah (3)</div>
+        </div>
+        <div class="crew-card">
+          <div class="crew-label">Joining Us</div>
+          <div class="crew-name">Nat + Erika<br>+ Cathy</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BOOKED -->
+    <section class="section">
+      <div class="section-head">
+        <span class="section-num">02</span>
+        <h2 class="section-title">Locked In</h2>
+      </div>
+
+      <div class="booking">
+        <div class="booking-status">✓ Booked</div>
+        <div>
+          <div class="booking-title">Chrysler Pacifica · Rental Van</div>
+          <div class="booking-sub">7 days · unlimited miles · prepaid in full</div>
+          <div class="booking-meta">
+            <div class="meta-row">
+              <span class="meta-label">Pickup</span>
+              <span class="meta-val">Mon 6/22 · 8:00 PM</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Drop-off</span>
+              <span class="meta-val">Mon 6/29 · 8:00 PM</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Confirmation</span>
+              <span class="meta-val">48021216US5</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Total</span>
+              <span class="meta-val">$612.48</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="booking">
+        <div class="booking-status">✓ Booked</div>
+        <div>
+          <div class="booking-title">Hilton Santa Fe Historic Plaza</div>
+          <div class="booking-sub">Outbound overnight · 1 night</div>
+          <div class="booking-meta">
+            <div class="meta-row">
+              <span class="meta-label">Check-in</span>
+              <span class="meta-val">Tue 6/23</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Check-out</span>
+              <span class="meta-val">Wed 6/24</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Confirmation</span>
+              <span class="meta-val">3490553044</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Honors #</span>
+              <span class="meta-val">297255151</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="booking">
+        <div class="booking-status">✓ Set</div>
+        <div>
+          <div class="booking-title">Ouray Lodging</div>
+          <div class="booking-sub">4 nights · home base for the trip</div>
+          <div class="booking-meta">
+            <div class="meta-row">
+              <span class="meta-label">Address</span>
+              <span class="meta-val">310 2nd St, Ouray, CO 81427</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Check-in</span>
+              <span class="meta-val">Wed 6/24</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Check-out</span>
+              <span class="meta-val">Sun 6/28</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="booking">
+        <div class="booking-status">✓ Booked</div>
+        <div>
+          <div class="booking-title">Hilton Garden Inn Albuquerque Uptown</div>
+          <div class="booking-sub">Return overnight · 1 night · 2 rooms (2 Queens each)</div>
+          <div class="booking-meta">
+            <div class="meta-row">
+              <span class="meta-label">Check-in</span>
+              <span class="meta-val">Sun 6/28</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Check-out</span>
+              <span class="meta-val">Mon 6/29</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Confirmation</span>
+              <span class="meta-val">3489172400</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Address</span>
+              <span class="meta-val">6510 Americas Pkwy NE, ABQ 87110</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Rooms</span>
+              <span class="meta-val">Cathy · Nick/Hallie/Norah</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- THE PLAN -->
+    <section class="section">
+      <div class="section-head">
+        <span class="section-num">03</span>
+        <h2 class="section-title">The Plan</h2>
+      </div>
+
+      <!-- DAY 1 -->
+      <div class="day">
+        <div class="day-header">
+          <span class="day-num">Day 01 · Tue 6/23</span>
+        </div>
+        <div class="day-route">OKC <span class="arrow">→</span> Santa Fe</div>
+        <div class="day-stats">535 mi · 7.5 hrs driving</div>
+
+        <div class="stop depart">
+          <div class="stop-time">7:00 AM</div>
+          <div class="stop-content">
+            <div class="stop-place">Depart OKC</div>
+            <div class="stop-note">Home, then west on I-40</div>
+          </div>
+        </div>
+        <div class="stop">
+          <div class="stop-time">10:30 AM</div>
+          <div class="stop-content">
+            <div class="stop-place">Amarillo, TX</div>
+            <div class="stop-note">Lunch — Big Texan or Tyler's BBQ</div>
+          </div>
+        </div>
+        <div class="stop">
+          <div class="stop-time">12:30 PM <span style="color:#6B7280;font-size:10px;">MT</span></div>
+          <div class="stop-content">
+            <div class="stop-place">Tucumcari, NM</div>
+            <div class="stop-note">Quick gas + Route 66 leg stretch · gain an hour</div>
+          </div>
+        </div>
+        <div class="stop arrive">
+          <div class="stop-time">3:30 PM</div>
+          <div class="stop-content">
+            <div class="stop-place">Arrive Hilton Santa Fe Historic Plaza</div>
+            <div class="stop-note">Decompress, then dinner on the Plaza</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DAY 2 -->
+      <div class="day">
+        <div class="day-header">
+          <span class="day-num">Day 02 · Wed 6/24</span>
+        </div>
+        <div class="day-route">Santa Fe <span class="arrow">→</span> Ouray</div>
+        <div class="day-stats">305 mi · 6 hrs driving · the scenic day</div>
+
+        <div class="stop depart">
+          <div class="stop-time">9:00 AM</div>
+          <div class="stop-content">
+            <div class="stop-place">Depart Santa Fe</div>
+            <div class="stop-note">North on US-84 into the high country</div>
+          </div>
+        </div>
+        <div class="stop">
+          <div class="stop-time">11:00 AM</div>
+          <div class="stop-content">
+            <div class="stop-place">Chama, NM</div>
+            <div class="stop-note">Drive-through — historic steam railroad town at 7,800 ft</div>
+          </div>
+        </div>
+        <div class="stop">
+          <div class="stop-time">12:00 PM</div>
+          <div class="stop-content">
+            <div class="stop-place">Pagosa Springs, CO</div>
+            <div class="stop-note">Riverwalk leg stretch</div>
+          </div>
+        </div>
+        <div class="stop">
+          <div class="stop-time">1:15 PM</div>
+          <div class="stop-content">
+            <div class="stop-place">Durango, CO</div>
+            <div class="stop-note">Lunch — Carver Brewing or El Moro</div>
+          </div>
+        </div>
+        <div class="stop">
+          <div class="stop-time">3:15 PM</div>
+          <div class="stop-content">
+            <div class="stop-place">Silverton, CO</div>
+            <div class="stop-note">Optional 30-min stop · top of the Million Dollar Highway</div>
+          </div>
+        </div>
+        <div class="stop arrive">
+          <div class="stop-time">5:00 PM</div>
+          <div class="stop-content">
+            <div class="stop-place">Arrive 310 2nd St, Ouray</div>
+            <div class="stop-note">Home base for the next 4 nights</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- IN OURAY -->
+      <div class="ouray-stay">
+        <span class="day-num">Days 03 – 05 · In Ouray</span>
+        <div class="day-route">Thu 6/25 <span class="arrow" style="color:#D89B4A;">·</span> Fri 6/26 <span class="arrow" style="color:#D89B4A;">·</span> Sat 6/27</div>
+        <div class="ouray-dates">3 full days in the San Juans</div>
+        <div class="ouray-addr">310 2nd St, Ouray, CO 81427 · 7,792 ft</div>
+      </div>
+
+      <!-- DAY 6 -->
+      <div class="day">
+        <div class="day-header">
+          <span class="day-num">Day 06 · Sun 6/28</span>
+        </div>
+        <div class="day-route">Ouray <span class="arrow">→</span> Albuquerque</div>
+        <div class="day-stats">365 mi · 6.5 hrs driving</div>
+
+        <div class="stop depart">
+          <div class="stop-time">9:00 AM</div>
+          <div class="stop-content">
+            <div class="stop-place">Depart Ouray</div>
+          </div>
+        </div>
+        <div class="stop">
+          <div class="stop-time">10:15 AM</div>
+          <div class="stop-content">
+            <div class="stop-place">Silverton, CO</div>
+            <div class="stop-note">Optional stop</div>
+          </div>
+        </div>
+        <div class="stop">
+          <div class="stop-time">11:30 AM</div>
+          <div class="stop-content">
+            <div class="stop-place">Durango, CO</div>
+            <div class="stop-note">Lunch — try Steamworks Brewing this time</div>
+          </div>
+        </div>
+        <div class="stop">
+          <div class="stop-time">2:00 PM</div>
+          <div class="stop-content">
+            <div class="stop-place">Pagosa Springs, CO</div>
+            <div class="stop-note">Quick leg stretch</div>
+          </div>
+        </div>
+        <div class="stop arrive">
+          <div class="stop-time">6:00 PM</div>
+          <div class="stop-content">
+            <div class="stop-place">Arrive Albuquerque</div>
+            <div class="stop-note">Hilton Garden Inn Uptown · walk to ABQ Uptown for dinner</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DAY 7 -->
+      <div class="day">
+        <div class="day-header">
+          <span class="day-num">Day 07 · Mon 6/29</span>
+        </div>
+        <div class="day-route">Albuquerque <span class="arrow">→</span> Home</div>
+        <div class="day-stats">545 mi · 8 hrs driving · straight shot on I-40</div>
+
+        <div class="stop depart">
+          <div class="stop-time">7:00 AM</div>
+          <div class="stop-content">
+            <div class="stop-place">Depart Albuquerque</div>
+            <div class="stop-note">Early start — easier on Norah</div>
+          </div>
+        </div>
+        <div class="stop">
+          <div class="stop-time">9:30 AM</div>
+          <div class="stop-content">
+            <div class="stop-place">Tucumcari, NM</div>
+            <div class="stop-note">Quick stop · last leg-stretch in NM</div>
+          </div>
+        </div>
+        <div class="stop">
+          <div class="stop-time">12:30 PM <span style="color:#6B7280;font-size:10px;">CT</span></div>
+          <div class="stop-content">
+            <div class="stop-place">Amarillo, TX</div>
+            <div class="stop-note">Lunch · lose an hour back to Central time</div>
+          </div>
+        </div>
+        <div class="stop arrive">
+          <div class="stop-time">5:30 PM</div>
+          <div class="stop-content">
+            <div class="stop-place">Home in OKC 🏠</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ELEVATION -->
+    <section class="section">
+      <div class="section-head">
+        <span class="section-num">04</span>
+        <h2 class="section-title">Elevation Profile</h2>
+      </div>
+      <div class="elevation">
+        <svg viewBox="0 0 700 180" xmlns="http://www.w3.org/2000/svg" aria-label="Trip elevation profile">
+          <!-- Grid lines -->
+          <g stroke="#E5DFD2" stroke-width="0.5">
+            <line x1="40" y1="40" x2="680" y2="40"/>
+            <line x1="40" y1="80" x2="680" y2="80"/>
+            <line x1="40" y1="120" x2="680" y2="120"/>
+          </g>
+          <!-- Elevation labels -->
+          <g font-family="JetBrains Mono, monospace" font-size="9" fill="#6B7280">
+            <text x="4" y="43">10K ft</text>
+            <text x="4" y="83">7K ft</text>
+            <text x="4" y="123">3K ft</text>
+          </g>
+          <!-- Elevation path: OKC(1200) → Amarillo(3605) → Tucumcari(4090) → Santa Fe(7199) → Chama(7860) → Pagosa(7126) → Durango(6512) → Silverton(9318) → Ouray(7792) -->
+          <path class="elevation-path"
+                d="M 60,150 L 140,118 L 210,112 L 300,72 L 370,63 L 430,73 L 490,83 L 560,48 L 640,68"
+                fill="none"
+                stroke="#1B3A4B"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"/>
+          <!-- Fill under curve -->
+          <path d="M 60,150 L 140,118 L 210,112 L 300,72 L 370,63 L 430,73 L 490,83 L 560,48 L 640,68 L 640,165 L 60,165 Z"
+                fill="#1B3A4B"
+                opacity="0.08"/>
+          <!-- Stops -->
+          <g>
+            <circle cx="60" cy="150" r="4" fill="#C73E1D" stroke="#1A1A1A" stroke-width="1"/>
+            <circle cx="140" cy="118" r="3" fill="#1B3A4B"/>
+            <circle cx="210" cy="112" r="3" fill="#1B3A4B"/>
+            <circle cx="300" cy="72" r="4" fill="#1B3A4B" stroke="#1A1A1A" stroke-width="1"/>
+            <circle cx="370" cy="63" r="3" fill="#1B3A4B"/>
+            <circle cx="430" cy="73" r="3" fill="#1B3A4B"/>
+            <circle cx="490" cy="83" r="3" fill="#1B3A4B"/>
+            <circle cx="560" cy="48" r="5" fill="#D89B4A" stroke="#1A1A1A" stroke-width="1.5"/>
+            <circle cx="640" cy="68" r="5" fill="#C73E1D" stroke="#1A1A1A" stroke-width="1.5"/>
+          </g>
+          <!-- Stop labels -->
+          <g font-family="Inter, sans-serif" font-size="10" fill="#1A1A1A" font-weight="600">
+            <text x="60" y="164" text-anchor="middle">OKC</text>
+            <text x="300" y="64" text-anchor="middle">Santa Fe</text>
+            <text x="560" y="38" text-anchor="middle">Silverton</text>
+            <text x="640" y="86" text-anchor="middle">Ouray</text>
+          </g>
+          <g font-family="JetBrains Mono, monospace" font-size="8" fill="#6B7280">
+            <text x="60" y="176" text-anchor="middle">1,200'</text>
+            <text x="560" y="28" text-anchor="middle">9,318'</text>
+            <text x="640" y="98" text-anchor="middle">7,792'</text>
+          </g>
+        </svg>
+      </div>
+    </section>
+
+    <!-- PIT STOPS -->
+    <section class="section">
+      <div class="section-head">
+        <span class="section-num">05</span>
+        <h2 class="section-title">Pit Stops for Norah</h2>
+      </div>
+      <p style="color:var(--ink-soft);font-size:14px;margin-bottom:20px;max-width:60ch;">
+        Playgrounds picked for an almost-3-year-old — soft surfaces, shade, bathrooms nearby, and all a short hop off the route. Tap any stop to see details and directions.
+      </p>
+
+      <!-- AMBUCS -->
+      <details class="pitstop">
+        <summary>
+          <div class="pitstop-summary">
+            <div class="pitstop-leg">Day 01 · Amarillo</div>
+            <div class="pitstop-name">AMBUCS Playground · John Ward Memorial Park</div>
+            <div class="pitstop-addr">1100 Wallace Blvd · ★ 4.7</div>
+          </div>
+          <span class="pitstop-chevron" aria-hidden="true">▾</span>
+        </summary>
+        <div class="pitstop-body">
+          <div class="pitstop-note">The big one. Splash pad, zipline, merry-go-round, swings &amp; slides on a <em>soft</em> faux-grass surface. Lake with ducks to feed, shaded picnic tables, tons of parking. A little south of I-40 — worth the detour after 3.5 hrs in the van.</div>
+          <a class="pitstop-link" href="https://www.google.com/maps/search/?api=1&query=AMBUCS+Playground+John+Ward+Memorial+Park+Amarillo+TX" target="_blank" rel="noopener">Directions →</a>
+        </div>
+      </details>
+
+      <!-- DUNN -->
+      <details class="pitstop">
+        <summary>
+          <div class="pitstop-summary">
+            <div class="pitstop-leg">Day 01 · Tucumcari</div>
+            <div class="pitstop-name">Dunn Park</div>
+            <div class="pitstop-addr">2467 S 4th St · ★ 4.2</div>
+          </div>
+          <span class="pitstop-chevron" aria-hidden="true">▾</span>
+        </summary>
+        <div class="pitstop-body">
+          <div class="pitstop-note">Quiet little playground with picnic tables, right off the highway. Classic PBJ-and-run stop before the push to Santa Fe.</div>
+          <a class="pitstop-link" href="https://www.google.com/maps/search/?api=1&query=Dunn+Park+Tucumcari+NM" target="_blank" rel="noopener">Directions →</a>
+        </div>
+      </details>
+
+      <!-- YAMAGUCHI -->
+      <details class="pitstop">
+        <summary>
+          <div class="pitstop-summary">
+            <div class="pitstop-leg">Day 02 · Pagosa Springs</div>
+            <div class="pitstop-name">Yamaguchi Park</div>
+            <div class="pitstop-addr">684 S 5th St · ★ 4.7</div>
+          </div>
+          <span class="pitstop-chevron" aria-hidden="true">▾</span>
+        </summary>
+        <div class="pitstop-body">
+          <div class="pitstop-note">Better than the Riverwalk for her age — has a <em>separate toddler playground</em> alongside the big-kid one, plus open room to run. River, clean bathrooms, shade ramadas, a couple miles off the touristy strip so it's calmer.</div>
+          <a class="pitstop-link" href="https://www.google.com/maps/search/?api=1&query=Yamaguchi+Park+Pagosa+Springs+CO" target="_blank" rel="noopener">Directions →</a>
+        </div>
+      </details>
+
+      <!-- SANTA RITA -->
+      <details class="pitstop">
+        <summary>
+          <div class="pitstop-summary">
+            <div class="pitstop-leg">Day 02 · Durango</div>
+            <div class="pitstop-name">Santa Rita Park</div>
+            <div class="pitstop-addr">111 S Camino Del Rio · ★ 4.7</div>
+          </div>
+          <span class="pitstop-chevron" aria-hidden="true">▾</span>
+        </summary>
+        <div class="pitstop-body">
+          <div class="pitstop-note">Big new playground with large slides, right by your lunch spot. Restrooms, covered tables, river access. <strong>Heads up:</strong> sits right on the river — water's fast and cold, so keep eyes on her near the edge.</div>
+          <a class="pitstop-link" href="https://www.google.com/maps/search/?api=1&query=Santa+Rita+Park+Durango+CO" target="_blank" rel="noopener">Directions →</a>
+        </div>
+      </details>
+    </section>
+
+    <!-- FOOTER STATS -->
+    <footer class="footer">
+      <div class="footer-stats">
+        <div>
+          <div class="stat-num">1,680</div>
+          <div class="stat-label">Total Miles</div>
+        </div>
+        <div>
+          <div class="stat-num">27</div>
+          <div class="stat-label">Hours Driving</div>
+        </div>
+        <div>
+          <div class="stat-num">6</div>
+          <div class="stat-label">Travelers</div>
+        </div>
+      </div>
+      <div class="footer-note">Plan as of June 15 · subject to whatever Norah decides</div>
+      <nav class="page-nav">
+        <a href="/ripley">🐾 Ripley's House Guide →</a>
+        <a href="/owen">👶 Owen's Care Schedule →</a>
+      </nav>
+    </footer>
+
+  </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+  (function() {
+    if (typeof L === 'undefined') {
+      document.getElementById('trip-map').innerHTML =
+        '<div style="padding:40px 20px;text-align:center;font-family:Inter,sans-serif;color:#6B7280;font-size:13px;">' +
+        'Map couldn\'t load — check your connection and refresh, or scroll down to see the elevation profile.' +
+        '</div>';
+      return;
+    }
+  const stops = [
+    { coords: [35.4688692, -97.519539],   name: 'Oklahoma City',           type: 'start',       sub: 'Day 1 · Depart 7:00 AM' },
+    { coords: [35.2069816, -101.832],     name: 'Amarillo, TX',            type: 'stop',        sub: 'Day 1 · Lunch stop' },
+    { coords: [35.171723,  -103.7249662], name: 'Tucumcari, NM',           type: 'stop',        sub: 'Day 1 · Quick stop' },
+    { coords: [35.6894307, -105.9381944], name: 'Santa Fe, NM',            type: 'overnight',   sub: 'Hilton Historic Plaza · Night 1 (outbound)' },
+    { coords: [36.9039,    -106.5786],    name: 'Chama, NM',               type: 'stop',        sub: 'Day 2 · Drive-through · 7,800 ft' },
+    { coords: [37.26945,   -107.0097617], name: 'Pagosa Springs, CO',      type: 'stop',        sub: 'Day 2 · Riverwalk stretch' },
+    { coords: [37.2739528, -107.8792499], name: 'Durango, CO',             type: 'stop',        sub: 'Day 2 · Lunch stop' },
+    { coords: [37.811941,  -107.6645057], name: 'Silverton, CO',           type: 'stop',        sub: 'Day 2 · Million Dollar Hwy · 9,318 ft' },
+    { coords: [38.0199696, -107.6734472], name: '310 2nd St, Ouray, CO',   type: 'destination', sub: 'Home base · 4 nights · 7,792 ft' }
+  ];
+
+  // Return leg: Ouray → Albuquerque (Day 6) → OKC (Day 7)
+  const returnStops = [
+    { coords: [38.0199696, -107.6734472], name: 'Ouray, CO',               type: 'destination', sub: 'Day 6 · Depart 9:00 AM' },
+    { coords: [37.811941,  -107.6645057], name: 'Silverton, CO',           type: 'return',      sub: 'Day 6 · Optional stop' },
+    { coords: [37.2739528, -107.8792499], name: 'Durango, CO',             type: 'return',      sub: 'Day 6 · Lunch · Steamworks' },
+    { coords: [37.26945,   -107.0097617], name: 'Pagosa Springs, CO',      type: 'return',      sub: 'Day 6 · Leg stretch' },
+    { coords: [35.0843859, -106.650422],  name: 'Albuquerque, NM',         type: 'overnight',   sub: 'Hilton Garden Inn Uptown · Night 6 (return)' },
+    { coords: [35.171723,  -103.7249662], name: 'Tucumcari, NM',           type: 'return',      sub: 'Day 7 · Quick stop' },
+    { coords: [35.2069816, -101.832],     name: 'Amarillo, TX',            type: 'return',      sub: 'Day 7 · Lunch stop' },
+    { coords: [35.4688692, -97.519539],   name: 'Oklahoma City',           type: 'start',       sub: 'Day 7 · Home ~5:30 PM' }
+  ];
+
+  const colors = {
+    start:       '#C73E1D',
+    stop:        '#C73E1D',
+    overnight:   '#1B3A4B',
+    destination: '#D89B4A',
+    return:      '#3E7C5A'
+  };
+
+  const map = L.map('trip-map', {
+    scrollWheelZoom: false,
+    zoomControl: true
+  });
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    maxZoom: 18
+  }).addTo(map);
+
+  // Route line
+  const route = L.polyline(stops.map(s => s.coords), {
+    color: '#C73E1D',
+    weight: 3,
+    opacity: 0.75,
+    dashArray: '0',
+    lineCap: 'round',
+    lineJoin: 'round'
+  }).addTo(map);
+
+  // Stop markers
+  stops.forEach((stop, i) => {
+    const isDest = stop.type === 'destination';
+    const isOvernight = stop.type === 'overnight';
+    const radius = isDest ? 9 : (isOvernight ? 8 : 7);
+
+    const marker = L.circleMarker(stop.coords, {
+      radius: radius,
+      fillColor: colors[stop.type],
+      color: '#1A1A1A',
+      weight: 1.5,
+      opacity: 1,
+      fillOpacity: 1
+    }).addTo(map);
+
+    marker.bindPopup(
+      '<strong>' + stop.name + '</strong>' +
+      '<small>' + stop.sub + '</small>'
+    );
+  });
+
+  // Return route line (dashed, green) — Ouray → ABQ → OKC
+  const returnRoute = L.polyline(returnStops.map(s => s.coords), {
+    color: '#3E7C5A',
+    weight: 3,
+    opacity: 0.75,
+    dashArray: '6 6',
+    lineCap: 'round',
+    lineJoin: 'round'
+  }).addTo(map);
+
+  // Return markers (skip Ouray + OKC — already drawn on outbound)
+  returnStops.forEach(stop => {
+    if (stop.type === 'destination' || stop.type === 'start') return;
+    const isOvernight = stop.type === 'overnight';
+    const marker = L.circleMarker(stop.coords, {
+      radius: isOvernight ? 8 : 6,
+      fillColor: colors[stop.type],
+      color: '#1A1A1A',
+      weight: 1.5,
+      opacity: 1,
+      fillOpacity: 1
+    }).addTo(map);
+    marker.bindPopup(
+      '<strong>' + stop.name + '</strong>' +
+      '<small>' + stop.sub + '</small>'
+    );
+  });
+
+  // Pit stop playgrounds (off-route, kid stops)
+  const pitstops = [
+    { coords: [35.1990561, -101.9144241], name: 'AMBUCS Playground',  sub: 'Amarillo · splash pad + soft surface' },
+    { coords: [35.156253,  -103.7292379], name: 'Dunn Park',          sub: 'Tucumcari · quick PBJ stop' },
+    { coords: [37.2554027, -107.0119151], name: 'Yamaguchi Park',     sub: 'Pagosa Springs · toddler playground' },
+    { coords: [37.2606785, -107.8781368], name: 'Santa Rita Park',    sub: 'Durango · big playground by lunch' }
+  ];
+
+  pitstops.forEach(p => {
+    const m = L.circleMarker(p.coords, {
+      radius: 6,
+      fillColor: '#3C5C3D',
+      color: '#FFFFFF',
+      weight: 2,
+      opacity: 1,
+      fillOpacity: 1
+    }).addTo(map);
+    m.bindPopup('<strong>' + p.name + '</strong><small>' + p.sub + '</small>');
+  });
+
+  // Fit map to full loop (outbound + return) with padding
+  const allBounds = route.getBounds().extend(returnRoute.getBounds());
+  map.fitBounds(allBounds, { padding: [30, 30] });
+
+  // Enable scroll zoom on click/focus
+  map.on('focus', () => map.scrollWheelZoom.enable());
+  map.on('blur',  () => map.scrollWheelZoom.disable());
+  })();
+</script>
+</body>
+</html>
