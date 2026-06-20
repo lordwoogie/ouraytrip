@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
 <style>
   :root {
     --bg: #FAFAF8;
@@ -525,6 +526,81 @@
     .container { max-width: 100%; }
     .section { break-inside: avoid; page-break-inside: avoid; }
     .emergency-block { page-break-after: avoid; }
+    .walk-map { display: none; }
+    .walk-card-note { color: #4A4A4A; }
+  }
+
+  /* ===== WALK ROUTES ===== */
+  .walk-routes { margin-top: 20px; }
+  .walk-routes-intro {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.65;
+    margin-bottom: 16px;
+  }
+  .walk-routes-intro strong { color: var(--urgent); }
+  .walk-maps {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .walk-card {
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--paper);
+  }
+  .walk-card-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .walk-card-head h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 16px;
+  }
+  .walk-distance {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 3px 9px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .walk-map {
+    width: 100%;
+    height: 280px;
+    background: #E8E3D9;
+  }
+  .walk-card-note {
+    padding: 11px 14px;
+    font-size: 12.5px;
+    color: var(--subtle);
+    line-height: 1.55;
+  }
+
+  /* Leaflet overrides */
+  .leaflet-container { font-family: 'Inter', sans-serif; background: #E8E3D9; }
+  .leaflet-popup-content-wrapper {
+    border-radius: 3px;
+    border: 1px solid var(--ink);
+  }
+  .leaflet-popup-content { margin: 9px 13px; font-size: 13px; }
+  .leaflet-popup-content strong {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 14px;
+  }
+
+  @media (max-width: 640px) {
+    .walk-maps { grid-template-columns: 1fr; }
+    .walk-map { height: 240px; }
   }
 </style>
 </head>
@@ -585,7 +661,7 @@
           <div class="routine-time">Anytime</div>
           <div class="routine-content">
             <h3>Walk + yard play</h3>
-            <p>Try to get her a real walk once a day &mdash; 30+ min is ideal. Use her leash from the back entry. She's a husky, so she'll pull. If it's too hot, aim for early morning or after sunset. The backyard is fenced too, so she can run around freely whenever &mdash; just keep an eye on the gate latch. Toys are around the house; she'll let you know what she wants.</p>
+            <p>Try to get her a real walk once a day &mdash; 30+ min is ideal. Use her leash from the back entry. She's a husky, so she'll pull. <strong>Important:</strong> she's a husky and overheats easily, but she'll <em>want to keep going</em> no matter how hot she gets &mdash; she won't quit on her own, so you have to call it. Walk early morning or after sunset, bring water, and head back if she's panting hard. Two mapped routes are below. The backyard is fenced too, so she can run around freely whenever &mdash; just keep an eye on the gate latch. Toys are around the house; she'll let you know what she wants.</p>
           </div>
         </div>
         <div class="routine-block">
@@ -600,6 +676,28 @@
           <div class="routine-content">
             <h3>Bedroom for the night</h3>
             <p>She sleeps in our bed/bedroom with us &mdash; you can let her do the same. She's crate-trained too if you'd rather have her sleep in the crate (it's set up in the main room), but she's used to having the run of the bedroom.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="walk-routes">
+        <p class="walk-routes-intro">Here are the two routes we usually take her on &mdash; both start and end right at the front door. Tap a map to zoom or drag it around. <strong>Remember she's a husky:</strong> she gets hot fast but will keep pushing the pace anyway, so pick the shorter loop on warm days and don't let her talk you into "just a little farther."</p>
+        <div class="walk-maps">
+          <div class="walk-card">
+            <div class="walk-card-head">
+              <h3>The long loop</h3>
+              <span class="walk-distance">~2.6 mi</span>
+            </div>
+            <div id="walk-map-1" class="walk-map"></div>
+            <div class="walk-card-note">Bigger neighborhood loop &mdash; best saved for a cool early morning when she's got energy to burn.</div>
+          </div>
+          <div class="walk-card">
+            <div class="walk-card-head">
+              <h3>The short loop</h3>
+              <span class="walk-distance">~1.6 mi</span>
+            </div>
+            <div id="walk-map-2" class="walk-map"></div>
+            <div class="walk-card-note">Quicker loop &mdash; the safer pick for warm afternoons or if she's already panting.</div>
           </div>
         </div>
       </div>
@@ -755,5 +853,33 @@
     </footer>
 
   </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+  (function() {
+    var routes = [
+      { id: 'walk-map-1', color: '#1E5C4A', label: 'Long loop \u00b7 ~2.6 mi', coords: [[35.56656, -97.63025], [35.56659, -97.63021], [35.56655, -97.63012], [35.56637, -97.63008], [35.56625, -97.63016], [35.56618, -97.6303], [35.56617, -97.63168], [35.56607, -97.63202], [35.56556, -97.63224], [35.56548, -97.63276], [35.56486, -97.63277], [35.56471, -97.6327], [35.56468, -97.63261], [35.56472, -97.63203], [35.56465, -97.63173], [35.56425, -97.63158], [35.56398, -97.63143], [35.56393, -97.63135], [35.56382, -97.63091], [35.56379, -97.6301], [35.56315, -97.63], [35.56272, -97.63005], [35.56153, -97.63003], [35.56129, -97.62989], [35.56123, -97.62977], [35.5613, -97.62922], [35.56189, -97.62848], [35.56202, -97.62816], [35.56198, -97.62809], [35.56109, -97.62742], [35.56089, -97.62735], [35.5607, -97.62731], [35.55943, -97.62729], [35.55911, -97.62716], [35.55892, -97.62647], [35.55893, -97.62625], [35.55923, -97.62621], [35.55953, -97.62601], [35.55961, -97.62605], [35.55995, -97.62604], [35.56029, -97.62587], [35.56076, -97.62587], [35.56092, -97.62591], [35.56224, -97.62577], [35.56239, -97.62569], [35.56267, -97.62562], [35.5628, -97.62547], [35.56305, -97.62543], [35.56369, -97.62541], [35.56419, -97.62547], [35.56452, -97.62525], [35.5647, -97.6252], [35.56546, -97.62522], [35.56554, -97.62536], [35.56553, -97.62784], [35.56558, -97.62883], [35.56555, -97.62999], [35.56569, -97.63015], [35.56572, -97.63028], [35.56569, -97.63085], [35.56575, -97.63116], [35.56575, -97.63189], [35.56583, -97.63202], [35.566, -97.63202], [35.56616, -97.63167], [35.56625, -97.6302], [35.56637, -97.63008], [35.56661, -97.63024], [35.56657, -97.6303], [35.56664, -97.63048], [35.56658, -97.63039], [35.56673, -97.63055], [35.56657, -97.63048], [35.56659, -97.63054], [35.56658, -97.63034], [35.56664, -97.63035], [35.56677, -97.63049], [35.56674, -97.6305], [35.56681, -97.63045], [35.5667, -97.63051], [35.5667, -97.63055], [35.56676, -97.63047], [35.56661, -97.63037], [35.56659, -97.63041], [35.56665, -97.63041], [35.56668, -97.63033], [35.56662, -97.63038], [35.5666, -97.63035], [35.56665, -97.63032], [35.56663, -97.63038], [35.56661, -97.63034], [35.56667, -97.63039], [35.56663, -97.63036], [35.56664, -97.63033], [35.56668, -97.63036], [35.56667, -97.63032], [35.56663, -97.63037], [35.56674, -97.6304], [35.56664, -97.63038], [35.56665, -97.63035], [35.56669, -97.6304], [35.56665, -97.6304], [35.56665, -97.63031], [35.5667, -97.63034], [35.56663, -97.63043], [35.56665, -97.63039], [35.56667, -97.63042], [35.56663, -97.63039], [35.56668, -97.63035], [35.56667, -97.63039], [35.56666, -97.63034], [35.56669, -97.63044], [35.56665, -97.63041], [35.5667, -97.63039], [35.56671, -97.63031], [35.56678, -97.63033], [35.56679, -97.63029], [35.56666, -97.63029], [35.56674, -97.63031], [35.56668, -97.63038], [35.56663, -97.63034], [35.56665, -97.63039], [35.56667, -97.63035], [35.56674, -97.63037], [35.5667, -97.63044], [35.56665, -97.63046], [35.56671, -97.63044], [35.56666, -97.63045], [35.56661, -97.63037], [35.56668, -97.63033], [35.56674, -97.63059], [35.56676, -97.63054], [35.56672, -97.63054], [35.56663, -97.63035], [35.56678, -97.63027], [35.56669, -97.63031], [35.56668, -97.63036], [35.56666, -97.63032]] },
+      { id: 'walk-map-2', color: '#C73E1D', label: 'Short loop \u00b7 ~1.6 mi', coords: [[35.56692, -97.6307], [35.56694, -97.63135], [35.56701, -97.63172], [35.56708, -97.63178], [35.56773, -97.63156], [35.56779, -97.6315], [35.56774, -97.6304], [35.56785, -97.63022], [35.56881, -97.63018], [35.56895, -97.6301], [35.5693, -97.62974], [35.56947, -97.6297], [35.56958, -97.6298], [35.56996, -97.63082], [35.57026, -97.63075], [35.57054, -97.63053], [35.57096, -97.63039], [35.57107, -97.63041], [35.57145, -97.63086], [35.57173, -97.63128], [35.5715, -97.63163], [35.57134, -97.63176], [35.57113, -97.63213], [35.57074, -97.63255], [35.57052, -97.63305], [35.57045, -97.6335], [35.57045, -97.63388], [35.57047, -97.63414], [35.57061, -97.63438], [35.57097, -97.63437], [35.57126, -97.6342], [35.57125, -97.63379], [35.57128, -97.63349], [35.57134, -97.63336], [35.57174, -97.63279], [35.57183, -97.63276], [35.57232, -97.63213], [35.57241, -97.63193], [35.57241, -97.63171], [35.57231, -97.63153], [35.57182, -97.63129], [35.57111, -97.6304], [35.57096, -97.63036], [35.57079, -97.6304], [35.57049, -97.63071], [35.57026, -97.63085], [35.56952, -97.63099], [35.56891, -97.63104], [35.56848, -97.63134], [35.56816, -97.63134], [35.56708, -97.63179], [35.56695, -97.63159], [35.56696, -97.63036], [35.56689, -97.63023], [35.56686, -97.63021], [35.5669, -97.63032], [35.56666, -97.63005], [35.56664, -97.63024], [35.56667, -97.63029], [35.56667, -97.63023], [35.56674, -97.63025], [35.56678, -97.63035], [35.56671, -97.63042], [35.56665, -97.63039], [35.56665, -97.63045], [35.56661, -97.63036]] }
+    ];
+    routes.forEach(function(r) {
+      var el = document.getElementById(r.id);
+      if (!el) return;
+      if (typeof L === 'undefined') {
+        el.innerHTML = '<div style="padding:30px 16px;text-align:center;font-family:Inter,sans-serif;color:#71717A;font-size:13px;">Map couldn\u2019t load \u2014 check your connection and refresh.</div>';
+        return;
+      }
+      var map = L.map(r.id, { scrollWheelZoom: false, zoomControl: true });
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        maxZoom: 19
+      }).addTo(map);
+      var line = L.polyline(r.coords, { color: r.color, weight: 4, opacity: 0.85, lineCap: 'round', lineJoin: 'round' }).addTo(map);
+      map.fitBounds(line.getBounds(), { padding: [22, 22] });
+      L.circleMarker(r.coords[0], { radius: 7, fillColor: '#18181B', color: '#FFFFFF', weight: 2, opacity: 1, fillOpacity: 1 })
+        .addTo(map)
+        .bindPopup('<strong>Start &amp; finish</strong><br>Ripley\u2019s front door \u00b7 ' + r.label);
+    });
+  })();
+</script>
 </body>
 </html>
