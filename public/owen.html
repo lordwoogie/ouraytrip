@@ -8,23 +8,24 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-    color: #1a1a1a;
-    line-height: 1.55;
+    color: #111111;
+    line-height: 1.6;
     padding: 24px;
     max-width: 850px;
     margin: 0 auto;
-    font-size: 16px;
+    font-size: 18px;
   }
+  body.big-mode { zoom: 1.25; }
   h1 {
-    font-size: 27px;
+    font-size: 29px;
     color: #1e40af;
     border-bottom: 3px solid #1e40af;
     padding-bottom: 6px;
     margin-bottom: 4px;
   }
-  .subtitle { font-size: 15px; color: #555; margin-bottom: 16px; }
+  .subtitle { font-size: 17px; color: #333; margin-bottom: 16px; }
   h2 {
-    font-size: 16px;
+    font-size: 17px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     color: #1e40af;
@@ -43,9 +44,9 @@
   .card.emergency h2 { color: #b91c1c; border-color: #fca5a5; }
   .card p { margin: 2px 0; }
   .label { font-weight: 600; color: #334155; }
-  .big { font-size: 18px; font-weight: 700; }
+  .big { font-size: 20px; font-weight: 700; }
   table { width: 100%; border-collapse: collapse; margin-top: 4px; }
-  th, td { border: 1px solid #cbd5e1; padding: 5px 7px; text-align: left; font-size: 14px; }
+  th, td { border: 1px solid #cbd5e1; padding: 6px 8px; text-align: left; font-size: 15px; }
   th { background: #e0e7ff; font-weight: 600; }
   .sched td:first-child { font-weight: 600; white-space: nowrap; width: 80px; }
   .night { background: #f1f5f9; }
@@ -55,8 +56,15 @@
   .log-grid td:first-child { text-align: left; font-weight: 600; white-space: nowrap; }
   .phone { font-weight: 700; color: #1e40af; }
   .emergency .phone { color: #b91c1c; }
+  .textsize-btn {
+    font-size: 13px; letter-spacing: 0.04em; text-transform: uppercase;
+    color: #1e40af; background: #e0e7ff; border: 1px solid #1e40af;
+    padding: 7px 14px; border-radius: 4px; cursor: pointer;
+    font-family: inherit; font-weight: 600;
+  }
   @media print {
     body { padding: 0; font-size: 13px; }
+    body.big-mode { zoom: 1; }
     h1 { font-size: 23px; }
     .card { background: #f8fafc !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .card.emergency { background: #fef2f2 !important; }
@@ -68,9 +76,10 @@
 </head>
 <body>
 
-  <nav style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
-    <a href="/" style="font-size:11px;letter-spacing:0.04em;text-transform:uppercase;text-decoration:none;color:#fff;background:#1e40af;padding:8px 14px;border-radius:4px;">← Ouray Trip</a>
-    <a href="/ripley" style="font-size:11px;letter-spacing:0.04em;text-transform:uppercase;text-decoration:none;color:#fff;background:#3C5C3D;padding:8px 14px;border-radius:4px;">🐾 Ripley's Guide</a>
+  <nav style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px;">
+    <a href="/" style="font-size:13px;letter-spacing:0.04em;text-transform:uppercase;text-decoration:none;color:#fff;background:#1e40af;padding:8px 14px;border-radius:4px;">← Ouray Trip</a>
+    <a href="/ripley" style="font-size:13px;letter-spacing:0.04em;text-transform:uppercase;text-decoration:none;color:#fff;background:#3C5C3D;padding:8px 14px;border-radius:4px;">🐾 Ripley's Guide</a>
+    <button type="button" class="textsize-btn" id="textSizeBtn" onclick="toggleTextSize()" style="margin-left:auto;">🔍 Larger text</button>
   </nav>
 
   <h1>Owen's Care Schedule</h1>
@@ -163,7 +172,7 @@
       <p>13901 McAuley Blvd, Ste 220</p>
       <p>Oklahoma City, OK 73134</p>
       <p><span class="label">Phone:</span> <span class="phone">(405) 755-6102</span></p>
-      <p style="margin-top:4px; font-size:13px; color:#555;">Same-day sick visits &amp; after-hours phone triage by their own physicians.</p>
+      <p style="margin-top:4px; font-size:13px; color:#333;">Same-day sick visits &amp; after-hours phone triage by their own physicians.</p>
     </div>
     <div class="card">
       <h2>Insurance</h2>
@@ -187,9 +196,27 @@
     <p style="margin-top:6px;"><span class="label">Then call us:</span> Nick (405) 642-2357 · Hallie (405) 650-1417</p>
   </div>
 
-  <p style="margin-top:16px; font-size:13px; color:#777; text-align:center;">
+  <p style="margin-top:16px; font-size:13px; color:#444; text-align:center;">
     Schedule is a flexible guide — follow Owen's hunger and sleep cues. When in doubt, call Nick or Hallie.
   </p>
+
+  <script>
+    function updateTextSizeBtn(on) {
+      var b = document.getElementById('textSizeBtn');
+      if (b) b.textContent = on ? '🔍 Normal text' : '🔍 Larger text';
+    }
+    function toggleTextSize() {
+      var on = document.body.classList.toggle('big-mode');
+      try { localStorage.setItem('owenBigText', on ? '1' : '0'); } catch (e) {}
+      updateTextSizeBtn(on);
+    }
+    (function () {
+      var on = false;
+      try { on = localStorage.getItem('owenBigText') === '1'; } catch (e) {}
+      if (on) document.body.classList.add('big-mode');
+      updateTextSizeBtn(on);
+    })();
+  </script>
 
 </body>
 </html>
