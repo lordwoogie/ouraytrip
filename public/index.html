@@ -457,6 +457,40 @@
     color: rgba(245, 241, 232, 0.9);
   }
 
+  .ouray-stay .ouray-forecast {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .ouray-fc-card {
+    min-width: 96px;
+    padding: 10px 12px;
+    background: rgba(245, 241, 232, 0.07);
+    border: 1px solid rgba(245, 241, 232, 0.18);
+    border-radius: 4px;
+  }
+  .ouray-fc-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: rgba(245, 241, 232, 0.7);
+  }
+  .ouray-fc-emoji { font-size: 20px; line-height: 1; margin: 5px 0; }
+  .ouray-fc-temps { font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+  .ouray-fc-hi { color: var(--sun); font-weight: 600; }
+  .ouray-fc-lo { color: rgba(245, 241, 232, 0.6); }
+  .ouray-fc-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(245, 241, 232, 0.5);
+    margin-top: 14px;
+  }
+
   /* ===== ELEVATION (now at bottom) ===== */
   .elevation {
     background: var(--paper);
@@ -919,6 +953,8 @@
         <div class="day-route">Thu 6/25 <span class="arrow" style="color:#D89B4A;">·</span> Fri 6/26 <span class="arrow" style="color:#D89B4A;">·</span> Sat 6/27</div>
         <div class="ouray-dates">3 full days in the San Juans</div>
         <div class="ouray-addr">310 2nd St, Ouray, CO 81427 · 7,792 ft</div>
+        <div class="ouray-fc-label" id="ouray-fc-label" style="display:none;">Forecast · high / low</div>
+        <div class="ouray-forecast" id="ouray-forecast" aria-label="Ouray forecast"></div>
       </div>
 
       <!-- DAY 6 -->
@@ -1378,6 +1414,60 @@
         });
       })
       .catch(function() { idx.forEach(clear); });
+  })();
+</script>
+<script>
+  /* 3-day high/low forecast for the Ouray stay (Open-Meteo daily, no key needed) */
+  (function() {
+    var el = document.getElementById('ouray-forecast');
+    if (!el) return;
+    var LAT = 38.0200, LON = -107.6734;
+    var dates = ['2026-06-25', '2026-06-26', '2026-06-27'];
+    var labels = { '2026-06-25': 'Thu 6/25', '2026-06-26': 'Fri 6/26', '2026-06-27': 'Sat 6/27' };
+
+    function emoji(code) {
+      if (code === 0) return '☀️';
+      if (code === 1) return '🌤️';
+      if (code === 2) return '⛅';
+      if (code === 3) return '☁️';
+      if (code === 45 || code === 48) return '🌫️';
+      if (code >= 51 && code <= 57) return '🌦️';
+      if (code >= 61 && code <= 67) return '🌧️';
+      if (code >= 71 && code <= 77) return '🌨️';
+      if (code >= 80 && code <= 82) return '🌦️';
+      if (code === 85 || code === 86) return '🌨️';
+      if (code >= 95) return '⛈️';
+      return '🌡️';
+    }
+
+    var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + LAT + '&longitude=' + LON +
+              '&daily=temperature_2m_max,temperature_2m_min,weather_code' +
+              '&temperature_unit=fahrenheit&timezone=America%2FDenver' +
+              '&start_date=' + dates[0] + '&end_date=' + dates[2];
+
+    fetch(url)
+      .then(function(r) { return r.json(); })
+      .then(function(d) {
+        if (!d.daily || !d.daily.time || !d.daily.time.length) return;
+        var t = d.daily.time, hi = d.daily.temperature_2m_max,
+            lo = d.daily.temperature_2m_min, wc = d.daily.weather_code;
+        var html = '';
+        for (var i = 0; i < t.length; i++) {
+          if (typeof hi[i] !== 'number' || typeof lo[i] !== 'number') continue;
+          html += '<div class="ouray-fc-card">' +
+            '<div class="ouray-fc-date">' + (labels[t[i]] || t[i]) + '</div>' +
+            '<div class="ouray-fc-emoji">' + emoji(wc[i]) + '</div>' +
+            '<div class="ouray-fc-temps"><span class="ouray-fc-hi">' + Math.round(hi[i]) + '°</span>' +
+            ' / <span class="ouray-fc-lo">' + Math.round(lo[i]) + '°</span></div>' +
+            '</div>';
+        }
+        if (html) {
+          el.innerHTML = html;
+          var lab = document.getElementById('ouray-fc-label');
+          if (lab) lab.style.display = '';
+        }
+      })
+      .catch(function() {});
   })();
 </script>
 </body>
