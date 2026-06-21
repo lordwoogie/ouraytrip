@@ -397,6 +397,22 @@
     line-height: 1.4;
   }
 
+  /* ===== LIVE WEATHER BADGE ===== */
+  .wx {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    margin-left: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--subtle, #71717A);
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+  .wx .wx-temp { color: var(--ink, #18181B); font-weight: 600; }
+  .wx.wx-loading { opacity: 0.45; }
+
   .stop.arrive .stop-place {
     color: var(--pine);
   }
@@ -1285,6 +1301,83 @@
   // Enable scroll zoom on click/focus
   map.on('focus', () => map.scrollWheelZoom.enable());
   map.on('blur',  () => map.scrollWheelZoom.disable());
+  })();
+</script>
+<script>
+  /* Live current weather next to each itinerary location (Open-Meteo, no key needed) */
+  (function() {
+    var LOCS = [
+      { k: 'okc',         lat: 35.4689, lon: -97.5195  },
+      { k: 'amarillo',    lat: 35.2070, lon: -101.8320 },
+      { k: 'tucumcari',   lat: 35.1717, lon: -103.7250 },
+      { k: 'santa fe',    lat: 35.6894, lon: -105.9382 },
+      { k: 'chama',       lat: 36.9039, lon: -106.5786 },
+      { k: 'pagosa',      lat: 37.2695, lon: -107.0098 },
+      { k: 'durango',     lat: 37.2739, lon: -107.8792 },
+      { k: 'silverton',   lat: 37.8119, lon: -107.6645 },
+      { k: 'ouray',       lat: 38.0200, lon: -107.6734 },
+      { k: 'albuquerque', lat: 35.0844, lon: -106.6504 }
+    ];
+
+    function emoji(code) {
+      if (code === 0) return '☀️';
+      if (code === 1) return '🌤️';
+      if (code === 2) return '⛅';
+      if (code === 3) return '☁️';
+      if (code === 45 || code === 48) return '🌫️';
+      if (code >= 51 && code <= 57) return '🌦️';
+      if (code >= 61 && code <= 67) return '🌧️';
+      if (code >= 71 && code <= 77) return '🌨️';
+      if (code >= 80 && code <= 82) return '🌦️';
+      if (code === 85 || code === 86) return '🌨️';
+      if (code >= 95) return '⛈️';
+      return '🌡️';
+    }
+
+    var places = document.querySelectorAll('.stop-place');
+    var used = {}; // LOCS index -> [badge elements]
+    places.forEach(function(el) {
+      var t = el.textContent.toLowerCase();
+      for (var i = 0; i < LOCS.length; i++) {
+        if (t.indexOf(LOCS[i].k) !== -1) {
+          var span = document.createElement('span');
+          span.className = 'wx wx-loading';
+          span.setAttribute('title', 'Current weather');
+          span.textContent = '…';
+          el.appendChild(span);
+          (used[i] = used[i] || []).push(span);
+          break;
+        }
+      }
+    });
+
+    var idx = Object.keys(used).map(Number);
+    if (!idx.length) return;
+
+    var lats = idx.map(function(i) { return LOCS[i].lat; }).join(',');
+    var lons = idx.map(function(i) { return LOCS[i].lon; }).join(',');
+    var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + lats +
+              '&longitude=' + lons +
+              '&current=temperature_2m,weather_code&temperature_unit=fahrenheit';
+
+    function clear(locIndex) { used[locIndex].forEach(function(b) { b.remove(); }); }
+
+    fetch(url)
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        var arr = Array.isArray(data) ? data : [data];
+        idx.forEach(function(locIndex, j) {
+          var d = arr[j];
+          if (!d || !d.current || typeof d.current.temperature_2m !== 'number') { clear(locIndex); return; }
+          var temp = Math.round(d.current.temperature_2m);
+          var code = d.current.weather_code;
+          used[locIndex].forEach(function(b) {
+            b.classList.remove('wx-loading');
+            b.innerHTML = emoji(code) + ' <span class="wx-temp">' + temp + '°</span>';
+          });
+        });
+      })
+      .catch(function() { idx.forEach(clear); });
   })();
 </script>
 </body>
