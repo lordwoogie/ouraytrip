@@ -491,6 +491,79 @@
     margin-top: 14px;
   }
 
+  /* ===== WEDDING ===== */
+  .wedding {
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--pine);
+    background: var(--paper);
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  .wedding-head {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 22px;
+    color: var(--pine);
+    text-align: center;
+    margin-bottom: 4px;
+  }
+  .wedding-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--subtle);
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .wedding-event {
+    padding: 16px 0;
+    border-top: 1px solid var(--rule);
+  }
+  .wedding-event:first-of-type { border-top: none; }
+  .wedding-event-name {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 18px;
+    color: var(--ink);
+  }
+  .wedding-event-when {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--highway);
+    margin-top: 4px;
+    letter-spacing: 0.03em;
+  }
+  .wedding-event-where {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-top: 6px;
+  }
+  .wedding-event-note {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-top: 8px;
+    line-height: 1.5;
+  }
+  .wedding-attire {
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+  }
+  .wedding-attire-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--pine);
+    margin-bottom: 10px;
+  }
+  .wedding-attire p {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+  .wedding-attire strong { color: var(--ink); }
+
   /* ===== ELEVATION (now at bottom) ===== */
   .elevation {
     background: var(--paper);
@@ -715,6 +788,32 @@
         <div id="trip-map"></div>
       </div>
     </header>
+
+    <!-- WEDDING WEEKEND -->
+    <div class="wedding">
+      <div class="wedding-head">Wedding Weekend</div>
+      <div class="wedding-sub">The reason we're all here</div>
+
+      <div class="wedding-event">
+        <div class="wedding-event-name">Welcome Happy Hour</div>
+        <div class="wedding-event-when">Fri, June 26 · 5:30 – 9:30 PM</div>
+        <div class="wedding-event-where">The Beaumont Hotel Courtyard · 505 Main St, Ouray</div>
+        <div class="wedding-event-note">Drinks, live music, and light bites to kick off the weekend. Come-and-go — feel free to stop by, head out to dinner, and return later. A full dinner won't be served.</div>
+      </div>
+
+      <div class="wedding-event">
+        <div class="wedding-event-name">Wedding Reception</div>
+        <div class="wedding-event-when">Sat, June 27 · 5:30 PM</div>
+        <div class="wedding-event-where">St. Elmo Hotel &amp; Tavern · 426 Main St, Ouray</div>
+        <div class="wedding-event-note">A relaxed evening to eat, drink, dance, and celebrate together with all of our family and friends.</div>
+      </div>
+
+      <div class="wedding-attire">
+        <div class="wedding-attire-title">Attire</div>
+        <p><strong>Friday Happy Hour:</strong> Casual and comfortable — dress up or keep it relaxed. It can get chilly, so bring a light jacket or wrap.</p>
+        <p><strong>Saturday Reception:</strong> Casual cocktail / elevated casual — dressy but comfortable for an evening celebration.</p>
+      </div>
+    </div>
 
     <!-- CREW -->
     <section class="section" style="margin-top: 8px;">
