@@ -30,3 +30,6 @@ Or push to a Git repo connected to Vercel. No build step — it's static.
 - Owen's page is designed to print to one page (Cmd/Ctrl-P → Save as PDF).
   The top nav bar is hidden automatically when printing.
 - To re-deploy after edits, just save the file and run `vercel --prod` again.
+- `.claude/settings.json` enables the [Vercel plugin](https://github.com/vercel/vercel-plugin)
+  for AI coding agents (Claude Code), adding Vercel skills, agents, and slash
+  commands like `/vercel-plugin:deploy` and `/vercel-plugin:status`.
