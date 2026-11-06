@@ -139,6 +139,9 @@
     font-family: 'Fraunces', Georgia, serif; font-weight: 600;
     font-size: 19px; margin: 22px 0 8px;
   }
+  .gl-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+  .gl-status { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.04em; color: var(--subtle); }
+  .gl-refresh { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--ink-soft); background: none; border: 1px solid var(--rule); border-radius: 8px; padding: 6px 10px; cursor: pointer; }
   .gl-pills { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
   .gl-pills button { font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 6px 12px; border-radius: 99px; border: 1px solid var(--rule); background: #F4F0E7; color: var(--ink-soft); cursor: pointer; }
   .gl-pills button.on { background: var(--lake); border-color: var(--lake); color: #fff; font-weight: 700; }
@@ -313,6 +316,10 @@
       <p class="lead">Build the trip list here: add items (it suggests as you type), tag each one by store, and check things off as you shop. Checked items drop into a history you can restore from. The list saves on each person's own device.</p>
 
       <div class="card" id="gl-app">
+        <div class="gl-top">
+          <span class="gl-status" id="gl-status">Loading…</span>
+          <button type="button" class="gl-refresh" id="gl-refresh">⟳ Refresh</button>
+        </div>
         <div class="gl-pills" id="gl-pills"></div>
         <div id="gl-list"></div>
         <div class="gl-addrow">
@@ -482,7 +489,33 @@
         o.textContent = s.n; elStore.appendChild(o);
       });
 
-      function setItems(next) { items = next; save(LS_ITEMS, items); render(); }
+      var API = "/api/kv", REMOTE_KEY = "trip-grocery-v1";
+      var elStatus = document.getElementById("gl-status");
+      var elRefresh = document.getElementById("gl-refresh");
+      var shared = false, remoteTimer = null;
+      function setStatus(t) { if (elStatus) elStatus.textContent = t; }
+      function remoteSave() {
+        clearTimeout(remoteTimer);
+        remoteTimer = setTimeout(function () {
+          fetch(API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ key: REMOTE_KEY, value: items }) })
+            .then(function (r) { if (!r.ok) throw 0; shared = true; setStatus("Shared family list \u2713"); })
+            .catch(function () { if (!shared) setStatus("Saving on this device only"); });
+        }, 600);
+      }
+      function remoteLoad(force) {
+        setStatus("Syncing\u2026");
+        return fetch(API + "?key=" + REMOTE_KEY, { cache: "no-store" })
+          .then(function (r) { if (!r.ok) throw 0; return r.json(); })
+          .then(function (data) {
+            if (Array.isArray(data) && (force || data.length > 0 || items.length === 0)) {
+              items = data; save(LS_ITEMS, items); render();
+            }
+            shared = true; setStatus("Shared family list \u2713");
+          })
+          .catch(function () { shared = false; setStatus("Saving on this device only"); });
+      }
+      if (elRefresh) elRefresh.addEventListener("click", function () { remoteLoad(true); });
+      function setItems(next) { items = next; save(LS_ITEMS, items); render(); remoteSave(); }
 
       function fmtTime(iso) {
         var d = new Date(iso);
@@ -637,6 +670,7 @@
       elAdd.addEventListener("click", add);
 
       render();
+      remoteLoad(false);
     })();
   </script>
 </body>
