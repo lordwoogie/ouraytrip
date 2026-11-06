@@ -3,234 +3,414 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aunt Ka &amp; Aunt Nat Nat</title>
+<title>Bella Vista Family Trip</title>
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&display=swap" rel="stylesheet">
-<meta name="theme-color" content="#1B3A4B">
+<meta name="theme-color" content="#2C5868">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Aunties">
+<meta name="apple-mobile-web-app-title" content="Bella Vista">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
+  :root {
+    --bg: #FAF7F1;
+    --paper: #FFFFFF;
+    --ink: #22221E;
+    --ink-soft: #55534B;
+    --rule: #E4DED1;
+    --lake: #2C5868;
+    --lake-soft: #E3EDF1;
+    --pine: #3E5C41;
+    --amber: #C77F2E;
+    --amber-soft: #F7E8D4;
+    --subtle: #8A867B;
+  }
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
   body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-    color: #111111;
-    line-height: 1.6;
-    padding: 24px;
-    max-width: 850px;
-    margin: 0 auto;
-    font-size: 18px;
-    background: #FFF9FB;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
   }
-  body.big-mode { zoom: 1.25; }
-  h1 {
+  .container { max-width: 880px; margin: 0 auto; padding: 24px 16px 48px; }
+
+  nav.topnav { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+  nav.topnav a {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
+    text-decoration: none; color: #fff; background: var(--lake);
+    padding: 8px 14px; border-radius: 4px;
+  }
+
+  header.hero {
+    background: var(--lake);
+    color: #F5F1E8;
+    text-align: center;
+    padding: 42px 20px 38px;
+    margin-bottom: 24px;
+  }
+  .hero-kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--amber-soft); margin-bottom: 10px;
+  }
+  .hero h1 {
     font-family: 'Fraunces', Georgia, serif;
-    font-size: 31px;
-    font-weight: 600;
-    color: #C2185B;
-    text-align: center;
-    padding-bottom: 2px;
-    margin-bottom: 4px;
+    font-weight: 600; font-size: 44px; line-height: 1.05;
   }
-  .hearts {
-    text-align: center;
-    color: #E38FB4;
-    font-size: 14px;
-    letter-spacing: 10px;
+  .hero-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; letter-spacing: 0.06em;
+    color: rgba(245,241,232,0.85); margin-top: 12px;
+  }
+
+  .section { margin-bottom: 36px; }
+  .section-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 12px; }
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; font-weight: 700; color: var(--amber);
+  }
+  .section-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600; font-size: 24px; color: var(--ink);
+  }
+  .lead { color: var(--ink-soft); font-size: 14.5px; max-width: 64ch; margin-bottom: 14px; }
+
+  .card {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 16px 18px;
     margin-bottom: 14px;
   }
-  .subtitle { font-size: 17px; color: #7A3B55; margin-bottom: 8px; text-align: center; font-style: italic; }
-  h2 {
-    font-size: 17px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: #C2185B;
-    margin: 18px 0 8px;
-    border-bottom: 1px solid #F0CFDD;
-    padding-bottom: 3px;
+  .meta-row { display: flex; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--rule); }
+  .meta-row:last-child { border-bottom: none; }
+  .meta-label {
+    flex: 0 0 110px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase;
+    color: var(--subtle); padding-top: 2px;
   }
-  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .card {
-    border: 1px solid #F0CFDD;
-    border-radius: 6px;
-    padding: 10px 12px;
-    background: #FDF7F9;
+  .meta-val { font-size: 14px; }
+  .meta-val a { color: var(--lake); font-weight: 600; }
+
+  .crew { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin-top: 12px; }
+  .crew div {
+    background: var(--lake-soft); border: 1px solid var(--rule); border-radius: 5px;
+    padding: 10px 12px; font-size: 13.5px;
   }
-  .card.emergency { background: #fef2f2; border-color: #fca5a5; }
-  .card.emergency h2 { color: #b91c1c; border-color: #fca5a5; }
-  .card p { margin: 2px 0; }
-  .label { font-weight: 600; color: #7A3B55; }
-  .big { font-size: 20px; font-weight: 700; }
-  table { width: 100%; border-collapse: collapse; margin-top: 4px; }
-  th, td { border: 1px solid #F0CFDD; padding: 6px 8px; text-align: left; font-size: 15px; }
-  th { background: #FCE4EE; font-weight: 600; }
-  .sched td:first-child { font-weight: 600; white-space: nowrap; width: 80px; }
-  .night { background: #FAEDF2; }
-  .note-list { margin: 6px 0 0 18px; }
-  .note-list li { margin: 3px 0; }
-  .log-grid th, .log-grid td { text-align: center; height: 22px; }
-  .log-grid td:first-child { text-align: left; font-weight: 600; white-space: nowrap; }
-  .phone { font-weight: 700; color: #C2185B; }
-  .emergency .phone { color: #b91c1c; }
-  .textsize-btn {
-    font-size: 13px; letter-spacing: 0.04em; text-transform: uppercase;
-    color: #C2185B; background: #FCE4EE; border: 1px solid #C2185B;
-    padding: 7px 14px; border-radius: 4px; cursor: pointer;
-    font-family: inherit; font-weight: 600;
+
+  .locked {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px;
   }
-  .photo-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 12px;
-    margin-top: 10px;
+  .locked span {
+    font-family: 'JetBrains Mono', monospace; font-size: 11.5px;
+    background: var(--amber-soft); color: #7A4E17;
+    border: 1px solid #E8CBA4; border-radius: 99px; padding: 5px 12px;
   }
-  .photo-grid figure { margin: 0; }
-  .photo-grid img {
-    width: 100%; height: auto; display: block;
-    border-radius: 6px; border: 1px solid #F0CFDD;
+
+  .tablewrap { overflow-x: auto; background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; min-width: 110px; }
+  th {
+    font-family: 'JetBrains Mono', monospace; font-size: 10.5px;
+    letter-spacing: 0.07em; text-transform: uppercase;
+    color: var(--subtle); background: #F4F0E7; white-space: nowrap;
   }
-  .photo-grid figcaption {
-    font-size: 13px; color: #333; margin-top: 5px; text-align: center;
+  tr:last-child td { border-bottom: none; }
+  td strong { color: var(--ink); }
+  td a, .lead a, li a { color: var(--lake); font-weight: 600; text-decoration: none; border-bottom: 1px solid #B8CBD4; }
+  td.day, td.when { font-weight: 600; white-space: nowrap; }
+  .phone a { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; white-space: nowrap; }
+
+  ul.notes { margin-left: 20px; }
+  ul.notes li { margin: 8px 0; max-width: 70ch; }
+
+  h3.gl-head {
+    font-family: 'Fraunces', Georgia, serif; font-weight: 600;
+    font-size: 19px; margin: 22px 0 8px;
   }
-  @media print {
-    body { padding: 0; font-size: 13px; }
-    body.big-mode { zoom: 1; }
-    h1 { font-size: 23px; }
-    .card { background: #FDF7F9 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .card.emergency { background: #fef2f2 !important; }
-    th { background: #FCE4EE !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .page-break { page-break-before: always; }
-    nav { display: none !important; }
+  .gl-group { background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; padding: 12px 16px; margin-bottom: 10px; }
+  .gl-group h4 {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: 0.07em; text-transform: uppercase; color: var(--amber);
+    margin-bottom: 6px;
+  }
+  .gl-group label {
+    display: flex; gap: 10px; align-items: baseline;
+    padding: 4px 0; font-size: 14px; cursor: pointer;
+  }
+  .gl-group input[type="checkbox"] { transform: translateY(1px) scale(1.15); accent-color: var(--pine); }
+  .gl-group input:checked + span { color: var(--subtle); text-decoration: line-through; }
+
+  .sources { font-size: 12.5px; color: var(--subtle); }
+  .sources li { margin: 3px 0; }
+
+  footer {
+    border-top: 1px solid var(--rule); margin-top: 40px; padding-top: 16px;
+    text-align: center; font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--subtle);
+  }
+  footer a { color: var(--subtle); }
+
+  @media (max-width: 560px) {
+    .hero h1 { font-size: 34px; }
+    .meta-label { flex-basis: 92px; }
   }
 </style>
 </head>
 <body>
+  <div class="container">
 
-  <nav style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px;">
-    <a href="/trip" style="font-size:13px;letter-spacing:0.04em;text-transform:uppercase;text-decoration:none;color:#fff;background:#C2185B;padding:8px 14px;border-radius:4px;">← Ouray Trip</a>
-    <a href="/ripley" style="font-size:13px;letter-spacing:0.04em;text-transform:uppercase;text-decoration:none;color:#fff;background:#3C5C3D;padding:8px 14px;border-radius:4px;">🐾 Ripley's Guide</a>
-    <a href="/owen" style="font-size:13px;letter-spacing:0.04em;text-transform:uppercase;text-decoration:none;color:#fff;background:#9C3D63;padding:8px 14px;border-radius:4px;">👶 Owen's Full Page</a>
-    <button type="button" class="textsize-btn" id="textSizeBtn" onclick="toggleTextSize()" style="margin-left:auto;">🔍 Larger text</button>
-  </nav>
+    <nav class="topnav">
+      <a href="/owen">👶 Owen's Page</a>
+    </nav>
 
-  <h1>Aunt Ka &amp; Aunt Nat Nat</h1>
-  <div class="subtitle">Owen's care guide · made with love for his favorite aunties</div>
-  <div class="hearts">♥ ♥ ♥</div>
+    <header class="hero">
+      <div class="hero-kicker">Family Trip Guide</div>
+      <h1>Bella Vista</h1>
+      <div class="hero-sub">Lake house weekend · Thu Nov 12 – Sun Nov 15, 2026</div>
+    </header>
 
-  <div class="grid2">
-    <div class="card">
-      <h2>About Owen</h2>
-      <p><span class="label">Name:</span> Owen Williams</p>
-      <p><span class="label">Date of birth:</span> April 15, 2026 (~5 months)</p>
-      <p><span class="label">Feeding:</span> Bottle — <strong>5 oz</strong> per feed</p>
-      <p><span class="label">Sleep:</span> Usually up <strong>once</strong> overnight to feed, sometime between 2–4 am</p>
-    </div>
-    <div class="card">
-      <h2>Parents</h2>
-      <p class="big">Nick (Dad)</p>
-      <p class="phone">(405) 642-2357</p>
-      <p class="big" style="margin-top:6px;">Hallie (Mom)</p>
-      <p class="phone">(405) 650-1417</p>
-    </div>
+    <!-- 01 TRIP BASICS -->
+    <section class="section">
+      <div class="section-head"><span class="section-num">01</span><h2 class="section-title">Trip Basics</h2></div>
+      <p class="lead">We're staying at a lake house in Bella Vista from Thursday, Nov. 12 to Sunday, Nov. 15. Downtown Bentonville is about 20 minutes away.</p>
+      <div class="card">
+        <div class="meta-row"><span class="meta-label">Address</span><span class="meta-val"><a href="https://www.google.com/maps/search/?api=1&amp;query=30%20Brittany%20Lane%2C%20Bella%20Vista%2C%20AR">30 Brittany Lane, Bella Vista, AR</a> (VRBO, hosted by Jamie)</span></div>
+        <div class="meta-row"><span class="meta-label">Check-in</span><span class="meta-val">Thursday, Nov. 12 at 4:00 PM</span></div>
+        <div class="meta-row"><span class="meta-label">Checkout</span><span class="meta-val">Sunday, Nov. 15 at 10:00 AM</span></div>
+        <div class="meta-row"><span class="meta-label">At the house</span><span class="meta-val">Pool, hot tub, lakeside patio, outdoor grill</span></div>
+        <div class="meta-row"><span class="meta-label">Door code</span><span class="meta-val">In the VRBO app under &ldquo;Getting inside&rdquo;</span></div>
+      </div>
+      <p class="lead" style="margin-bottom:4px;">There are 11 of us: <strong>8 adults and 3 little ones.</strong></p>
+      <div class="crew">
+        <div>Grandparents (2)</div>
+        <div>Family with a 3-year-old and a 7-month-old (4)</div>
+        <div>Family with an 11-month-old (3)</div>
+        <div>The 27-year-old and his girlfriend (2)</div>
+      </div>
+    </section>
+
+    <!-- 02 WEEKEND OPTIONS -->
+    <section class="section">
+      <div class="section-head"><span class="section-num">02</span><h2 class="section-title">Weekend Options</h2></div>
+      <div class="locked">
+        <span>🔒 Check-in Thu 4 PM</span>
+        <span>🔒 Razorbacks Sat 6:45 PM</span>
+        <span>🔒 Checkout Sun 10 AM</span>
+      </div>
+      <p class="lead">Only three things are set: check-in Thursday at 4 PM, the Razorbacks game Saturday at 6:45 PM, and checkout Sunday at 10 AM. For every other slot, pick one option; mornings suit outings and early afternoons leave room for naps.</p>
+      <div class="tablewrap"><table>
+        <tr><th>Day</th><th>Time</th><th>Option A</th><th>Option B</th><th>Option C</th></tr>
+        <tr><td class="day">Thu, Nov 12</td><td>Evening</td><td>Grill and hot tub at the house</td><td>Dinner at JJ's Grill, 10 minutes away</td><td>JJ's delivered to the house</td></tr>
+        <tr><td class="day">Fri, Nov 13</td><td>Morning</td><td>Amazeum, opens 10 AM</td><td>Crystal Bridges and the Walmart Museum</td><td>Cafe USA breakfast, then Tanyard Creek walk</td></tr>
+        <tr><td class="day">Fri, Nov 13</td><td>Afternoon</td><td>Naps at the house</td><td>Stroller loop at Lake Bella Vista Park</td><td>Pea Ridge driving tour while babies nap in the car</td></tr>
+        <tr><td class="day">Fri, Nov 13</td><td>Evening</td><td>JJ's Grill</td><td>Bentonville Brewing Co.</td><td>Townie Burgers, booked on Tock</td></tr>
+        <tr><td class="day">Sat, Nov 14</td><td>Morning</td><td>Farmers market (9 AM to noon) and Walmart Museum ice cream</td><td>Amazeum, if we skip it Friday</td><td>Tanyard Creek walk, if we skip it Friday</td></tr>
+        <tr><td class="day">Sat, Nov 14</td><td>Afternoon</td><td>Second Saturday at Crystal Bridges (11 AM to 4 PM)</td><td>Naps and the OU game at the house</td><td>Lake Bella Vista Park</td></tr>
+        <tr><td class="day">Sat, Nov 14</td><td>Evening</td><td>Early group dinner, then the Hogs game at the house</td><td>Couples' night out downtown</td><td>Watch the Hogs at Parlay on 8th, booked on Tock</td></tr>
+        <tr><td class="day">Sun, Nov 15</td><td>Morning</td><td>Brunch at Table au Centre after checkout</td><td>Cafe USA breakfast before checkout</td><td>Pack up and head home</td></tr>
+      </table></div>
+    </section>
+
+    <!-- 03 THINGS TO DO -->
+    <section class="section">
+      <div class="section-head"><span class="section-num">03</span><h2 class="section-title">Things to Do</h2></div>
+      <p class="lead">Everything here is within about 25 minutes of the house and works for a group with babies and grandparents.</p>
+      <div class="tablewrap"><table>
+        <tr><th>Place</th><th>Best for</th><th>Good to know</th></tr>
+        <tr><td><a href="https://www.amazeum.org">Scott Family Amazeum</a></td><td>The 3-year-old and the babies</td><td>$17 for ages 2 and up, under 2 free. A new early-learning area for ages 0 to 6 opens Nov. 7. Bring a change of clothes for the water play.</td></tr>
+        <tr><td>Crystal Bridges Museum</td><td>Everyone</td><td>Free. Stroller-friendly paths, a Frank Lloyd Wright house on the grounds, and a Grandma Moses exhibit. Next door to the Amazeum.</td></tr>
+        <tr><td><a href="https://corporate.walmart.com/about/walmart-museum/plan-your-visit.html">The Walmart Museum</a></td><td>Everyone</td><td>Free. The original Walton's 5&amp;10 on the Bentonville Square, with a soda fountain serving Arkansas-made ice cream.</td></tr>
+        <tr><td>The Momentary</td><td>The 27-year-old and his girlfriend</td><td>Contemporary art in an old cheese plant, with a rooftop bar. Good for a night out.</td></tr>
+        <tr><td>Tanyard Creek Nature Trail</td><td>A short family walk</td><td>Easy loop with a waterfall and a swinging bridge, close to the house. Natural surface, so bring baby carriers instead of strollers.</td></tr>
+        <tr><td>Lake Bella Vista Park</td><td>Stroller walks</td><td>Flat loop around the lake with a playground.</td></tr>
+        <tr><td>Pea Ridge National Military Park</td><td>The grandparents</td><td>Civil War battlefield with a driving tour, so babies can nap in their car seats.</td></tr>
+      </table></div>
+    </section>
+
+    <!-- 04 RESTAURANTS -->
+    <section class="section">
+      <div class="section-head"><span class="section-num">04</span><h2 class="section-title">Restaurants for All 11 of Us</h2></div>
+      <p class="lead">For any sit-down meal, call a day ahead and ask for a corner table, two high chairs and a booster. On Friday and Saturday, aim to eat before 6 PM; the Razorbacks kick off at 6:45 PM Saturday, so sports bars will be packed that evening.</p>
+      <div class="tablewrap"><table>
+        <tr><th>Restaurant</th><th>Why it works</th><th>Booking</th><th>Phone</th></tr>
+        <tr><td><a href="https://jjsgrill.com/bellavista/">JJ's Grill, Bella Vista</a></td><td>Closest to the house; big, casual, huge menu. Kitchen open until 10 PM Fri to Sun.</td><td>Call ahead</td><td class="phone"><a href="tel:+14798026455">(479) 802-6455</a></td></tr>
+        <tr><td><a href="https://www.townieburgers.com">Townie Burgers</a></td><td>On the Square; reviewers say it's great with toddlers.</td><td>Reserve on Tock</td><td class="phone"><a href="tel:+14795331750">(479) 533-1750</a></td></tr>
+        <tr><td><a href="https://parlayon8th.com">Parlay on 8th</a></td><td>Southern food at 8th Street Market, with shuffleboard.</td><td>Reserve on Tock</td><td class="phone"><a href="tel:+14793264520">(479) 326-4520</a></td></tr>
+        <tr><td><a href="https://www.opentable.com/r/onyx-at-the-preserve-bentonville">Onyx at The Preserve</a></td><td>New restaurant from the Onyx Coffee team, beside Preserve Park and the Greenway. Shared plates and handmade pizzas, plus coffee, breakfast and weekend brunch.</td><td>Reserve on OpenTable</td><td class="phone"><a href="tel:+14793605060">(479) 360-5060</a></td></tr>
+        <tr><td><a href="https://tableaucentre.com">Table au Centre</a></td><td>Weekend brunch 9 AM to 2 PM; an easy Sunday goodbye meal after checkout.</td><td>Call ahead</td><td class="phone"><a href="tel:+14793640300">(479) 364-0300</a></td></tr>
+        <tr><td><a href="https://onyxcoffeelab.com/en-int/pages/bentonville">Onyx Coffee Lab</a></td><td>Nationally known coffee roaster, just off the Square at 100 NW 2nd St. Open 6:30 AM to 8 PM daily; pairs well with the Saturday farmers market.</td><td>Walk in</td><td class="phone"><a href="tel:+14797156492">(479) 715-6492</a></td></tr>
+        <tr><td>Cafe USA</td><td>Diner breakfast next to Harps, big portions, open 7 AM to 3 PM.</td><td>Go early on weekends</td><td class="phone"><a href="tel:+14798768721">(479) 876-8721</a></td></tr>
+        <tr><td>Bentonville Brewing Co.</td><td>Family-friendly, with a kids' play area and room to spread out.</td><td>Walk in</td><td></td></tr>
+        <tr><td>The Bend</td><td>Pizza and lawn games; mostly outdoor seating, so only if the weather is nice.</td><td>Walk in</td><td></td></tr>
+      </table></div>
+    </section>
+
+    <!-- 05 GROCERIES -->
+    <section class="section">
+      <div class="section-head"><span class="section-num">05</span><h2 class="section-title">Groceries</h2></div>
+      <p class="lead">Coming up I-49 from Oklahoma City, the Walmart Neighborhood Market on Central Ave in Bentonville is the cheapest stop for bulk staples and baby supplies. Allen's, Harps and Turnbuckle Farm are all within about 10 minutes of the house for anything else.</p>
+      <div class="tablewrap"><table>
+        <tr><th>Store</th><th>Hours</th><th>Order online?</th><th>Good to know</th></tr>
+        <tr><td>Walmart Neighborhood Market (1703 E Central Ave, Bentonville)</td><td>6 AM to 11 PM daily</td><td>Yes: Walmart pickup or delivery</td><td>Just off I-49 on the drive in; best prices on diapers, wipes and bulk staples</td></tr>
+        <tr><td>Allen's Food Market (60 Sugar Creek Center, Bella Vista)</td><td>7:30 AM to 9 PM daily</td><td>No; call <a href="tel:+14798766190">(479) 876-6190</a> to ask about an item</td><td>Local favorite with a great meat counter, fresh sushi and lots of gluten-free options. Staff carry bags to your car.</td></tr>
+        <tr><td>Harps, Bella Vista Towncenter (404 Towncenter)</td><td>6 AM to 9 PM daily</td><td>Yes: <a href="https://shop.harpsfood.com">shop.harpsfood.com</a> or the Instacart app</td><td>Closest full grocery store to Bella Vista's town center. Cafe USA is next door for breakfast.</td></tr>
+        <tr><td>Turnbuckle Farm (821 NW McNelly Rd, Bentonville)</td><td>8 AM to 8 PM; Sunday from 9 AM</td><td>No</td><td>Farm stand with local eggs, honey and sourdough, plus a breakfast food truck. Kids can feed the ducks.</td></tr>
+      </table></div>
+
+      <h3 class="gl-head">Grocery list</h3>
+      <p class="lead">Sized for 8 adults and 3 little ones: Thursday's cookout, three breakfasts, two lunches, Saturday dinner at the house, and snacks. Sunday brunch is out. <em>(Checkboxes save on your own phone, so split the list by store.)</em></p>
+
+      <div class="gl-group">
+        <h4>Breakfasts (Friday to Sunday)</h4>
+        <label><input type="checkbox" data-k="b1"><span>Eggs, 4 dozen</span></label>
+        <label><input type="checkbox" data-k="b2"><span>Bacon, 3 lb, and breakfast sausage, 2 lb</span></label>
+        <label><input type="checkbox" data-k="b3"><span>Pancake mix and syrup</span></label>
+        <label><input type="checkbox" data-k="b4"><span>Bread, 2 loaves, and butter</span></label>
+        <label><input type="checkbox" data-k="b5"><span>Bagels, 2 dozen, and cream cheese</span></label>
+        <label><input type="checkbox" data-k="b6"><span>Yogurt: a large tub plus kids' cups</span></label>
+        <label><input type="checkbox" data-k="b7"><span>Cereal, 2 boxes</span></label>
+        <label><input type="checkbox" data-k="b8"><span>Milk, 2 gallons, and orange juice, 2 half-gallons</span></label>
+        <label><input type="checkbox" data-k="b9"><span>Coffee and creamer</span></label>
+        <label><input type="checkbox" data-k="b10"><span>Bananas, 2 bunches, and berries, 3 containers</span></label>
+      </div>
+      <div class="gl-group">
+        <h4>Lunches (Friday picnic, Saturday)</h4>
+        <label><input type="checkbox" data-k="l1"><span>Sandwich bread, 2 loaves</span></label>
+        <label><input type="checkbox" data-k="l2"><span>Deli turkey and ham, 3 lb total, and sliced cheese, 2 packs</span></label>
+        <label><input type="checkbox" data-k="l3"><span>Peanut butter and jelly</span></label>
+        <label><input type="checkbox" data-k="l4"><span>Chips, variety pack</span></label>
+        <label><input type="checkbox" data-k="l5"><span>Apples, grapes and baby carrots</span></label>
+        <label><input type="checkbox" data-k="l6"><span>Mayo, mustard and pickles</span></label>
+      </div>
+      <div class="gl-group">
+        <h4>Thursday cookout</h4>
+        <label><input type="checkbox" data-k="c1"><span>Ground beef, 4 lb (about 16 burgers), and 2 packs of buns</span></label>
+        <label><input type="checkbox" data-k="c2"><span>Hot dogs and buns, 1 pack each</span></label>
+        <label><input type="checkbox" data-k="c3"><span>Lettuce, tomatoes, onion and cheese slices</span></label>
+        <label><input type="checkbox" data-k="c4"><span>Baked beans and potato salad</span></label>
+        <label><input type="checkbox" data-k="c5"><span>Grill fuel, if the house doesn't supply it</span></label>
+      </div>
+      <div class="gl-group">
+        <h4>Saturday game night at the house</h4>
+        <label><input type="checkbox" data-k="g1"><span>Taco bar: ground beef, 3 lb; tortillas and shells; shredded cheese, lettuce, salsa, sour cream</span></label>
+        <label><input type="checkbox" data-k="g2"><span>Chips and queso</span></label>
+      </div>
+      <div class="gl-group">
+        <h4>Snacks</h4>
+        <p style="font-size:13px;color:var(--subtle);">Nothing listed yet — add favorites before the Walmart stop.</p>
+      </div>
+      <div class="gl-group">
+        <h4>Drinks</h4>
+        <label><input type="checkbox" data-k="d1"><span>Bottled water, 2 cases, and sparkling water</span></label>
+        <label><input type="checkbox" data-k="d2"><span>Juice boxes</span></label>
+        <label><input type="checkbox" data-k="d3"><span>Beer and wine, or bring from home</span></label>
+        <label><input type="checkbox" data-k="d4"><span>Ice, 2 bags</span></label>
+      </div>
+    </section>
+
+    <!-- 06 EVENTS -->
+    <section class="section">
+      <div class="section-head"><span class="section-num">06</span><h2 class="section-title">Events While We're There</h2></div>
+      <p class="lead">Saturday, Nov. 14 is the busy day, with three football games plus events in Bentonville. Nothing notable is scheduled Thursday or Friday.</p>
+      <div class="tablewrap"><table>
+        <tr><th>When (Sat, Nov 14)</th><th>Event</th><th>Notes</th></tr>
+        <tr><td class="when">Morning</td><td><a href="https://gotrail.run/trail-running-calendar/united-states/arkansas/bentonville">Back 40 Trail Races</a>, Bella Vista</td><td>5- to 40-mile races on the local trails, so trailheads will be busy</td></tr>
+        <tr><td class="when">9 AM to noon</td><td><a href="https://downtownbentonville.org/events/farmers-market">Indoor farmers market</a> at Record, downtown Bentonville</td><td>Produce, baked goods, local gifts</td></tr>
+        <tr><td class="when">11 AM to 4 PM</td><td><a href="https://www.kuaf.com/community-calendar/event/second-saturday-celebrating-indigenous-heritage-08-09-2026-15-38-18">Second Saturday at Crystal Bridges</a></td><td>Free drop-in day celebrating Indigenous heritage, with family art-making</td></tr>
+        <tr><td class="when">Early afternoon</td><td>OU vs. Ole Miss in Norman</td><td>Set for a 2:00 to 3:15 PM window on ESPN or SEC Network; exact time comes after this weekend's games</td></tr>
+        <tr><td class="when">Time not yet set</td><td>OSU vs. Texas Tech in Stillwater</td><td>Big 12 hasn't announced the kickoff yet</td></tr>
+        <tr><td class="when">6:45 PM</td><td><a href="https://www.nwaonline.com/news/2026/nov/02/kickoff-time-for-arkansas-footballs-game-vs-south-carolina-announced-by-sec/">Razorbacks vs. South Carolina</a> in Fayetteville</td><td>On SEC Network; expect crowded bars and traffic toward Fayetteville</td></tr>
+      </table></div>
+      <p class="lead" style="margin-top:12px;">Also that week, the Artist-Blacksmith's Association holds its conference at the Benton County Fairgrounds Nov. 11 to 14; check whether spectators are allowed. The Bentonville Square holiday lighting (Nov. 21) and Fayetteville's Lights of the Ozarks start the week after we leave.</p>
+    </section>
+
+    <!-- 07 BARS -->
+    <section class="section">
+      <div class="section-head"><span class="section-num">07</span><h2 class="section-title">Bars in Bentonville</h2></div>
+      <p class="lead">Most of these are downtown, about 20 minutes from the house, so plan on a designated driver or rideshare.</p>
+      <div class="tablewrap"><table>
+        <tr><th>Bar</th><th>Type</th><th>Good to know</th></tr>
+        <tr><td>Callisto</td><td>Cocktails</td><td>Speakeasy entered through an art gallery; book ahead on weekends</td></tr>
+        <tr><td><a href="https://www.opentable.com/r/preachers-son-bentonville">Preacher's Son</a></td><td>Cocktails</td><td>Restored 1898 church at 201 NW A St; book dinner on OpenTable, or go downstairs to Undercroft, its basement bar</td></tr>
+        <tr><td>Hardwater Cocktail Room</td><td>Cocktails</td><td>Great drinks and food; closed Sunday and Monday</td></tr>
+        <tr><td>Loveless Cocktail Club</td><td>Cocktails</td><td>Moody lounge with DJs and a big non-alcoholic menu</td></tr>
+        <tr><td>ButterScotch</td><td>Cocktails</td><td>Upstairs on Central overlooking the Square; closed Monday and Tuesday</td></tr>
+        <tr><td>Tower Bar at the Momentary</td><td>Cocktails</td><td>Rooftop bar; pairs well with dinner at 8th Street Market</td></tr>
+        <tr><td>Bentonville Taproom</td><td>Beer</td><td>All-Arkansas taps right on the Square; good for a flight</td></tr>
+        <tr><td>Barley &amp; Vine</td><td>Beer</td><td>More than 25 taps and pizza, just off the Square</td></tr>
+        <tr><td>Bike Rack Brewing</td><td>Beer</td><td>Bentonville's oldest brewery, at 8th Street Market</td></tr>
+        <tr><td>Botanical at 8th &amp; A</td><td>Game day</td><td>Friendly sports pub; opens 9 AM Saturday</td></tr>
+        <tr><td>The First Seat Pub</td><td>Game day</td><td>Divey, lots of TVs, famous pork rinds; open until 1 AM</td></tr>
+        <tr><td>Muselet</td><td>Wine</td><td>Champagne bar with standout gluten-free fried chicken</td></tr>
+        <tr><td>Ramo d'Olivo</td><td>Wine</td><td>Cozy wine bar and shop with charcuterie; closed Sunday</td></tr>
+        <tr><td>Trailhead Tap</td><td>Low-key</td><td>Cheap, dog-friendly, live music on weekends, away from the crowds</td></tr>
+      </table></div>
+    </section>
+
+    <!-- 08 GOOD TO KNOW -->
+    <section class="section">
+      <div class="section-head"><span class="section-num">08</span><h2 class="section-title">Good to Know</h2></div>
+      <div class="card">
+        <ul class="notes">
+          <li><strong>Water safety:</strong> the pool and lake sit right off the patio. With a 3-year-old and two babies on the move, keep someone on water watch whenever the doors are open, and keep the hot tub covered.</li>
+          <li><strong>Strollers vs. carriers:</strong> strollers work at Crystal Bridges, the Amazeum and Lake Bella Vista Park; bring carriers for Tanyard Creek.</li>
+          <li><strong>High chairs:</strong> restaurants need notice for a group of 11 with three little ones, so call a day ahead.</li>
+          <li><strong>Saturday crowds:</strong> the trail races fill Bella Vista trailheads in the morning, and the Razorbacks game fills bars and roads in the evening.</li>
+          <li><strong>Layers:</strong> mid-November evenings can be chilly on the patio and the trails.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- SOURCES -->
+    <section class="section">
+      <div class="section-head"><span class="section-num">09</span><h2 class="section-title">Sources</h2></div>
+      <ul class="notes sources">
+        <li><a href="https://digital-release.nwahomepage.com/?p=2451599">Crystal Bridges 2026 exhibitions</a></li>
+        <li><a href="https://www.amazeum.org/about/participation/donations/">Amazeum admission</a></li>
+        <li><a href="https://corporate.walmart.com/about/walmart-museum/plan-your-visit.html">Walmart Museum visitor info</a></li>
+        <li><a href="https://www.kuaf.com/community-calendar/event/second-saturday-celebrating-indigenous-heritage-08-09-2026-15-38-18">Second Saturday at Crystal Bridges</a></li>
+        <li><a href="https://downtownbentonville.org/events/farmers-market">Bentonville indoor farmers market</a></li>
+        <li><a href="https://www.nwaonline.com/news/2026/nov/02/kickoff-time-for-arkansas-footballs-game-vs-south-carolina-announced-by-sec/">Arkansas vs. South Carolina kickoff</a></li>
+        <li><a href="https://jjsgrill.com/bellavista/">JJ's Grill Bella Vista</a></li>
+        <li><a href="https://talkbusiness.net/2019/11/harps-food-stores-launches-grocery-pickup-service/">Harps online ordering</a></li>
+        <li><a href="https://theshelbyreport.com/2020/07/29/morrow-cultivated-camaraderie-allens-foods/">Allen's Foods profile</a></li>
+      </ul>
+    </section>
+
+    <footer>
+      Plan as of Nov. 6 · Go Hogs 🐗<br>
+      Archive: <a href="/trip">Ouray trip</a> · <a href="/ripley">Ripley's guide</a> · <a href="/owen">Owen's page</a>
+    </footer>
+
   </div>
-
-  <h2>Daily Schedule (flexible — feed on demand every ~3 hrs)</h2>
-  <table class="sched">
-    <tr><th>Time</th><th>Activity</th></tr>
-    <tr><td>6:30 am</td><td>Wake + feed (5 oz)</td></tr>
-    <tr><td>7:00 am</td><td>Diaper, awake time / play</td></tr>
-    <tr><td>8:45 am</td><td>Nap 1</td></tr>
-    <tr><td>10:00 am</td><td>Up + feed (5 oz), play</td></tr>
-    <tr><td>12:45 pm</td><td>Nap 2 (the big one, ~1–1.5 hrs)</td></tr>
-    <tr><td>2:15 pm</td><td>Up + feed (5 oz), play</td></tr>
-    <tr><td>4:30 pm</td><td>Catnap (~30 min — wake him by 5:00)</td></tr>
-    <tr><td>5:00 pm</td><td>Awake time, play</td></tr>
-    <tr><td>6:15 pm</td><td>Bath / wind-down (bath every other night)</td></tr>
-    <tr><td>6:45 pm</td><td>Bedtime bottle (5 oz) + routine — he falls asleep in his crib between 7:15–8:00</td></tr>
-    <tr class="night"><td>11:00 pm</td><td>Dream feed (5 oz)</td></tr>
-    <tr class="night"><td>~2–4 am</td><td>Night feed (5 oz, on waking — usually just the one)</td></tr>
-  </table>
-
-  <h2>Key Notes</h2>
-  <ul class="note-list">
-    <li><strong>Awake windows run ~2–2.5 hrs.</strong> Watch for sleepy cues — yawning, fussing, looking away — and put him down before he's overtired.</li>
-    <li><strong>Bottle prep:</strong> heat up water while you add <strong>3 oz of cold breastmilk</strong> to a bottle. Once the water is hot, add <strong>2 oz of it</strong> to the breastmilk, then add <strong>one scoop of formula</strong>. Shake and feed.</li>
-    <li><strong>Breastmilk handling:</strong> thawed/refrigerated milk used within 24 hrs; don't refreeze. A combined bottle: use within ~1 hr once he starts drinking; discard leftovers 1 hr after a feed begins.</li>
-    <li><strong>Always back to sleep</strong>, on a firm flat surface — no loose blankets, pillows, or toys.</li>
-    <li><strong>Burp</strong> midway through and after each feed.</li>
-    <li><strong>Diapers:</strong> 6–8 wet diapers/day means he's eating enough. Total intake ~30 oz/day.</li>
-    <li>One night waking to feed (usually between 2–4 am) is expected — don't try to push him through.</li>
-  </ul>
-
-  <div class="card" style="margin-top:16px;">
-    <h2>Tylenol — Pain &amp; Fever</h2>
-    <p><span class="label">Owen's weight:</span> 12.5 lbs</p>
-    <p style="margin-top:4px;"><span class="label">Infants' Tylenol</span> (acetaminophen, 160 mg / 5 mL):</p>
-    <p class="big" style="margin-top:2px;">1.25–2.5 mL every 4–6 hours</p>
-    <p style="margin-top:6px;">No need to chase a fever — <strong>under 104°F is fine</strong>. This is mainly for <strong>comfort at bedtime</strong>.</p>
-    <p style="margin-top:4px; font-size:14px; color:#333;">Use the syringe that came with the bottle, and no more than 5 doses in 24 hours. When in doubt, call Nick or Hallie.</p>
-  </div>
-
-  <div class="grid2">
-    <div class="card">
-      <h2>Pediatrician</h2>
-      <p class="big">Dr. Jana Freeman</p>
-      <p>Northside Pediatrics</p>
-      <p>13901 McAuley Blvd, Ste 220</p>
-      <p>Oklahoma City, OK 73134</p>
-      <p><span class="label">Phone:</span> <span class="phone">(405) 755-6102</span></p>
-      <p style="margin-top:4px; font-size:13px; color:#333;">Same-day sick visits &amp; after-hours phone triage by their own physicians.</p>
-    </div>
-    <div class="card">
-      <h2>Insurance</h2>
-      <p><span class="label">Plan:</span> BlueCross BlueShield of OK (PPO)</p>
-      <p><span class="label">Subscriber:</span> Nicholas C Williams</p>
-      <p><span class="label">ID:</span> <strong>YUP821039693</strong></p>
-      <p><span class="label">Group:</span> 153860</p>
-      <p><span class="label">RxBIN:</span> 011552 &nbsp; <span class="label">RxPCN:</span> 1215</p>
-      <p><span class="label">Member Svc:</span> 1-800-942-5837</p>
-    </div>
-  </div>
-
-  <div class="card emergency" style="margin-top:16px;">
-    <h2>In an Emergency</h2>
-    <p style="font-size:15px;"><strong>Call 911 for any life-threatening emergency.</strong></p>
-    <p style="margin-top:6px;">If time allows, our preferred ER is the <strong>only 24/7 pediatric ER in OKC:</strong></p>
-    <p class="big" style="margin-top:4px;">Oklahoma Children's Hospital OU Health</p>
-    <p>1200 N. Children's Ave., Oklahoma City, OK 73104</p>
-    <p><span class="label">ER direct line:</span> <span class="phone">(405) 271-4876</span> &nbsp;·&nbsp; <span class="label">Main:</span> (405) 271-4700</p>
-    <p style="margin-top:4px; font-size:14px;">ER entrance is on the <strong>north side</strong> of the hospital, off NE 13th St, just east of Children's Ave. Park in the ramp and follow signs for <strong>Emergency</strong>.</p>
-    <p style="margin-top:6px;"><span class="label">Then call us:</span> Nick (405) 642-2357 · Hallie (405) 650-1417</p>
-  </div>
-
-  <p style="margin-top:16px; font-size:13px; color:#444; text-align:center;">
-    Schedule is a flexible guide — follow Owen's hunger and sleep cues. When in doubt, call Nick or Hallie.<br>Thanks for loving on him ♥
-  </p>
 
   <script>
-    function updateTextSizeBtn(on) {
-      var b = document.getElementById('textSizeBtn');
-      if (b) b.textContent = on ? '🔍 Normal text' : '🔍 Larger text';
-    }
-    function toggleTextSize() {
-      var on = document.body.classList.toggle('big-mode');
-      try { localStorage.setItem('owenBigText', on ? '1' : '0'); } catch (e) {}
-      updateTextSizeBtn(on);
-    }
+    /* Grocery checkboxes persist per-device via localStorage */
     (function () {
-      var on = false;
-      try { on = localStorage.getItem('owenBigText') === '1'; } catch (e) {}
-      if (on) document.body.classList.add('big-mode');
-      updateTextSizeBtn(on);
+      var KEY = 'bvGrocery';
+      var state = {};
+      try { state = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) {}
+      var boxes = document.querySelectorAll('.gl-group input[type="checkbox"][data-k]');
+      boxes.forEach(function (cb) {
+        var k = cb.getAttribute('data-k');
+        if (state[k]) cb.checked = true;
+        cb.addEventListener('change', function () {
+          state[k] = cb.checked;
+          try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+        });
+      });
     })();
   </script>
-
 </body>
 </html>
