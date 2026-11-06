@@ -14,6 +14,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Bella Vista">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -165,6 +166,16 @@
     .hero h1 { font-size: 34px; }
     .meta-label { flex-basis: 92px; }
   }
+
+  #drive-map {
+    width: 100%; height: 380px;
+    background: #E8E3D9;
+    border: 1px solid var(--rule); border-radius: 6px;
+  }
+  .leaflet-container { font-family: 'Inter', sans-serif; background: #E8E3D9; }
+  .leaflet-popup-content { font-size: 13px; }
+  .leaflet-popup-content strong { font-family: 'Fraunces', serif; font-weight: 600; display: block; }
+  @media (max-width: 560px) { #drive-map { height: 300px; } }
 </style>
 </head>
 <body>
@@ -200,9 +211,16 @@
       </div>
     </section>
 
-    <!-- 02 WEEKEND OPTIONS -->
+    <!-- 02 GETTING THERE -->
     <section class="section">
-      <div class="section-head"><span class="section-num">02</span><h2 class="section-title">Weekend Options</h2></div>
+      <div class="section-head"><span class="section-num">02</span><h2 class="section-title">Getting There</h2></div>
+      <p class="lead">From OKC it's about 240 miles and roughly 4 hours: I-44 east to Tulsa, US-412 across into Arkansas, then I-49 north to Bella Vista — with the Walmart grocery stop right off the highway on the way in. <a href="https://www.google.com/maps/dir/?api=1&amp;origin=Oklahoma+City,+OK&amp;destination=30+Brittany+Lane,+Bella+Vista,+AR">Open turn-by-turn directions →</a></p>
+      <div id="drive-map"></div>
+    </section>
+
+    <!-- 03 WEEKEND OPTIONS -->
+    <section class="section">
+      <div class="section-head"><span class="section-num">03</span><h2 class="section-title">Weekend Options</h2></div>
       <div class="locked">
         <span>🔒 Check-in Thu 4 PM</span>
         <span>🔒 Razorbacks Sat 6:45 PM</span>
@@ -224,7 +242,7 @@
 
     <!-- 03 THINGS TO DO -->
     <section class="section">
-      <div class="section-head"><span class="section-num">03</span><h2 class="section-title">Things to Do</h2></div>
+      <div class="section-head"><span class="section-num">04</span><h2 class="section-title">Things to Do</h2></div>
       <p class="lead">Everything here is within about 25 minutes of the house and works for a group with babies and grandparents.</p>
       <div class="tablewrap"><table>
         <tr><th>Place</th><th>Best for</th><th>Good to know</th></tr>
@@ -240,7 +258,7 @@
 
     <!-- 04 RESTAURANTS -->
     <section class="section">
-      <div class="section-head"><span class="section-num">04</span><h2 class="section-title">Restaurants for All 11 of Us</h2></div>
+      <div class="section-head"><span class="section-num">05</span><h2 class="section-title">Restaurants for All 11 of Us</h2></div>
       <p class="lead">For any sit-down meal, call a day ahead and ask for a corner table, two high chairs and a booster. On Friday and Saturday, aim to eat before 6 PM; the Razorbacks kick off at 6:45 PM Saturday, so sports bars will be packed that evening.</p>
       <div class="tablewrap"><table>
         <tr><th>Restaurant</th><th>Why it works</th><th>Booking</th><th>Phone</th></tr>
@@ -258,7 +276,7 @@
 
     <!-- 05 GROCERIES -->
     <section class="section">
-      <div class="section-head"><span class="section-num">05</span><h2 class="section-title">Groceries</h2></div>
+      <div class="section-head"><span class="section-num">06</span><h2 class="section-title">Groceries</h2></div>
       <p class="lead">Coming up I-49 from Oklahoma City, the Walmart Neighborhood Market on Central Ave in Bentonville is the cheapest stop for bulk staples and baby supplies. Allen's, Harps and Turnbuckle Farm are all within about 10 minutes of the house for anything else.</p>
       <div class="tablewrap"><table>
         <tr><th>Store</th><th>Hours</th><th>Order online?</th><th>Good to know</th></tr>
@@ -321,7 +339,7 @@
 
     <!-- 06 EVENTS -->
     <section class="section">
-      <div class="section-head"><span class="section-num">06</span><h2 class="section-title">Events While We're There</h2></div>
+      <div class="section-head"><span class="section-num">07</span><h2 class="section-title">Events While We're There</h2></div>
       <p class="lead">Saturday, Nov. 14 is the busy day, with three football games plus events in Bentonville. Nothing notable is scheduled Thursday or Friday.</p>
       <div class="tablewrap"><table>
         <tr><th>When (Sat, Nov 14)</th><th>Event</th><th>Notes</th></tr>
@@ -337,7 +355,7 @@
 
     <!-- 07 BARS -->
     <section class="section">
-      <div class="section-head"><span class="section-num">07</span><h2 class="section-title">Bars in Bentonville</h2></div>
+      <div class="section-head"><span class="section-num">08</span><h2 class="section-title">Bars in Bentonville</h2></div>
       <p class="lead">Most of these are downtown, about 20 minutes from the house, so plan on a designated driver or rideshare.</p>
       <div class="tablewrap"><table>
         <tr><th>Bar</th><th>Type</th><th>Good to know</th></tr>
@@ -360,7 +378,7 @@
 
     <!-- 08 GOOD TO KNOW -->
     <section class="section">
-      <div class="section-head"><span class="section-num">08</span><h2 class="section-title">Good to Know</h2></div>
+      <div class="section-head"><span class="section-num">09</span><h2 class="section-title">Good to Know</h2></div>
       <div class="card">
         <ul class="notes">
           <li><strong>Water safety:</strong> the pool and lake sit right off the patio. With a 3-year-old and two babies on the move, keep someone on water watch whenever the doors are open, and keep the hot tub covered.</li>
@@ -374,7 +392,7 @@
 
     <!-- SOURCES -->
     <section class="section">
-      <div class="section-head"><span class="section-num">09</span><h2 class="section-title">Sources</h2></div>
+      <div class="section-head"><span class="section-num">10</span><h2 class="section-title">Sources</h2></div>
       <ul class="notes sources">
         <li><a href="https://digital-release.nwahomepage.com/?p=2451599">Crystal Bridges 2026 exhibitions</a></li>
         <li><a href="https://www.amazeum.org/about/participation/donations/">Amazeum admission</a></li>
@@ -395,6 +413,49 @@
 
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script>
+    /* OKC -> Bella Vista drive map */
+    (function () {
+      var el = document.getElementById('drive-map');
+      if (!el) return;
+      if (typeof L === 'undefined') { el.style.display = 'none'; return; }
+      var route = [
+        [35.4689, -97.5195], // OKC
+        [35.7487, -96.6583], // Stroud (Turner Turnpike)
+        [36.0047, -96.1120], // Sapulpa
+        [36.1540, -95.9928], // Tulsa
+        [36.1900, -95.3400], // Chouteau (US-412)
+        [36.2000, -94.7960], // Kansas, OK
+        [36.1881, -94.5405], // Siloam Springs
+        [36.1780, -94.2330], // Tontitown (412 meets I-49)
+        [36.2660, -94.1860], // I-49 north
+        [36.3660, -94.2000], // Bentonville
+        [36.4660, -94.2710]  // Bella Vista
+      ];
+      var stops = [
+        { c: [35.4689, -97.5195], name: 'Oklahoma City', sub: 'Home — I-44 east' },
+        { c: [36.1540, -95.9928], name: 'Tulsa', sub: 'I-44 to US-412 east' },
+        { c: [36.1881, -94.5405], name: 'Siloam Springs, AR', sub: 'Welcome to Arkansas' },
+        { c: [36.3660, -94.1890], name: 'Walmart Neighborhood Market', sub: 'Grocery stop · 1703 E Central Ave, Bentonville' },
+        { c: [36.4660, -94.2710], name: 'The lake house', sub: '30 Brittany Lane, Bella Vista', dest: true }
+      ];
+      var map = L.map('drive-map', { scrollWheelZoom: false, zoomControl: true });
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        maxZoom: 18
+      }).addTo(map);
+      var line = L.polyline(route, { color: '#2C5868', weight: 3.5, opacity: 0.85, lineCap: 'round', lineJoin: 'round' }).addTo(map);
+      stops.forEach(function (s) {
+        L.circleMarker(s.c, {
+          radius: s.dest ? 9 : 7,
+          fillColor: s.dest ? '#C77F2E' : '#2C5868',
+          color: '#FFFFFF', weight: 2, opacity: 1, fillOpacity: 1
+        }).addTo(map).bindPopup('<strong>' + s.name + '</strong>' + s.sub);
+      });
+      map.fitBounds(line.getBounds(), { padding: [28, 28] });
+    })();
+  </script>
   <script>
     /* Grocery checkboxes persist per-device via localStorage */
     (function () {
