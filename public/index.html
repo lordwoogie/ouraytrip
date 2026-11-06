@@ -139,18 +139,41 @@
     font-family: 'Fraunces', Georgia, serif; font-weight: 600;
     font-size: 19px; margin: 22px 0 8px;
   }
-  .gl-group { background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; padding: 12px 16px; margin-bottom: 10px; }
-  .gl-group h4 {
-    font-family: 'JetBrains Mono', monospace; font-size: 11px;
-    letter-spacing: 0.07em; text-transform: uppercase; color: var(--amber);
-    margin-bottom: 6px;
+  .gl-pills { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+  .gl-pills button { font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 6px 12px; border-radius: 99px; border: 1px solid var(--rule); background: #F4F0E7; color: var(--ink-soft); cursor: pointer; }
+  .gl-pills button.on { background: var(--lake); border-color: var(--lake); color: #fff; font-weight: 700; }
+  .gl-row { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--rule); }
+  .gl-check { width: 22px; height: 22px; border-radius: 6px; border: 2px solid #CBD5E1; background: transparent; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; line-height: 1; }
+  .gl-check.done { background: var(--pine); border-color: var(--pine); }
+  .gl-name { flex: 1; font-size: 14.5px; min-width: 0; overflow-wrap: anywhere; }
+  .gl-row.done .gl-name { color: var(--subtle); text-decoration: line-through; }
+  .gl-storechip { font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 2px 8px; border-radius: 99px; color: #fff; white-space: nowrap; }
+  .gl-iconbtn { background: none; border: none; cursor: pointer; color: var(--subtle); font-size: 14px; padding: 2px 5px; }
+  .gl-empty { color: var(--subtle); font-size: 13.5px; padding: 10px 0; font-style: italic; }
+  .gl-addrow { display: flex; align-items: center; gap: 8px; padding-top: 12px; flex-wrap: wrap; }
+  .gl-plus { color: var(--amber); font-weight: 700; font-size: 18px; }
+  .gl-inputwrap { position: relative; flex: 1; min-width: 140px; }
+  .gl-inputwrap input, .gl-addrow select {
+    width: 100%; font-family: 'Inter', sans-serif; font-size: 16px; padding: 8px 10px;
+    border: 1px solid var(--rule); border-radius: 6px; background: #fff; color: var(--ink);
   }
-  .gl-group label {
-    display: flex; gap: 10px; align-items: baseline;
-    padding: 4px 0; font-size: 14px; cursor: pointer;
+  .gl-addrow select { width: auto; font-size: 13px; }
+  .gl-addrow > button {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700;
+    background: var(--lake); color: #fff; border: none; border-radius: 6px; padding: 10px 14px; cursor: pointer;
   }
-  .gl-group input[type="checkbox"] { transform: translateY(1px) scale(1.15); accent-color: var(--pine); }
-  .gl-group input:checked + span { color: var(--subtle); text-decoration: line-through; }
+  .gl-sugg { position: absolute; bottom: 100%; left: 0; right: 0; background: #fff; border: 1px solid var(--rule); border-radius: 8px; box-shadow: 0 -4px 14px rgba(0,0,0,0.12); margin-bottom: 4px; z-index: 40; overflow: hidden; }
+  .gl-sugg div { padding: 9px 12px; font-size: 13.5px; cursor: pointer; border-bottom: 1px solid var(--rule); }
+  .gl-sugg div:last-child { border-bottom: none; }
+  .gl-sugg div:hover { background: var(--lake-soft); }
+  .gl-hist-toggle { background: none; border: none; cursor: pointer; font-family: 'Inter', sans-serif; font-size: 13.5px; color: var(--subtle); display: flex; align-items: center; gap: 8px; padding: 12px 0 4px; width: 100%; }
+  .gl-hist-toggle .clear { margin-left: auto; color: #B3452C; font-size: 11px; font-weight: 700; }
+  .gl-time { font-size: 11px; color: var(--subtle); margin-top: 1px; }
+  .gl-edit { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--rule); }
+  .gl-edit input, .gl-edit select { font-family: 'Inter', sans-serif; font-size: 16px; padding: 7px 9px; border: 1px solid var(--rule); border-radius: 6px; }
+  .gl-edit input { flex: 1; min-width: 110px; }
+  .gl-edit .save { background: var(--pine); color: #fff; border: none; border-radius: 6px; padding: 8px 12px; cursor: pointer; font-size: 12px; font-family: 'JetBrains Mono', monospace; font-weight: 700; }
+  .gl-edit .cancel { background: none; border: none; color: var(--subtle); cursor: pointer; font-size: 12px; }
 
   .sources { font-size: 12.5px; color: var(--subtle); }
   .sources li { margin: 3px 0; }
@@ -287,54 +310,23 @@
       </table></div>
 
       <h3 class="gl-head">Grocery list</h3>
-      <p class="lead">Sized for 8 adults and 3 little ones: Thursday's cookout, three breakfasts, two lunches, Saturday dinner at the house, and snacks. Sunday brunch is out. <em>(Checkboxes save on your own phone, so split the list by store.)</em></p>
+      <p class="lead">Build the trip list here: add items (it suggests as you type), tag each one by store, and check things off as you shop. Checked items drop into a history you can restore from. The list saves on each person's own device.</p>
 
-      <div class="gl-group">
-        <h4>Breakfasts (Friday to Sunday)</h4>
-        <label><input type="checkbox" data-k="b1"><span>Eggs, 4 dozen</span></label>
-        <label><input type="checkbox" data-k="b2"><span>Bacon, 3 lb, and breakfast sausage, 2 lb</span></label>
-        <label><input type="checkbox" data-k="b3"><span>Pancake mix and syrup</span></label>
-        <label><input type="checkbox" data-k="b4"><span>Bread, 2 loaves, and butter</span></label>
-        <label><input type="checkbox" data-k="b5"><span>Bagels, 2 dozen, and cream cheese</span></label>
-        <label><input type="checkbox" data-k="b6"><span>Yogurt: a large tub plus kids' cups</span></label>
-        <label><input type="checkbox" data-k="b7"><span>Cereal, 2 boxes</span></label>
-        <label><input type="checkbox" data-k="b8"><span>Milk, 2 gallons, and orange juice, 2 half-gallons</span></label>
-        <label><input type="checkbox" data-k="b9"><span>Coffee and creamer</span></label>
-        <label><input type="checkbox" data-k="b10"><span>Bananas, 2 bunches, and berries, 3 containers</span></label>
+      <div class="card" id="gl-app">
+        <div class="gl-pills" id="gl-pills"></div>
+        <div id="gl-list"></div>
+        <div class="gl-addrow">
+          <span class="gl-plus">+</span>
+          <div class="gl-inputwrap">
+            <input id="gl-name" type="text" placeholder="List item" autocomplete="off">
+            <div id="gl-sugg" class="gl-sugg" hidden></div>
+          </div>
+          <select id="gl-store" aria-label="Store"></select>
+          <button type="button" id="gl-addbtn">Add</button>
+        </div>
+        <div id="gl-history"></div>
       </div>
-      <div class="gl-group">
-        <h4>Lunches (Friday picnic, Saturday)</h4>
-        <label><input type="checkbox" data-k="l1"><span>Sandwich bread, 2 loaves</span></label>
-        <label><input type="checkbox" data-k="l2"><span>Deli turkey and ham, 3 lb total, and sliced cheese, 2 packs</span></label>
-        <label><input type="checkbox" data-k="l3"><span>Peanut butter and jelly</span></label>
-        <label><input type="checkbox" data-k="l4"><span>Chips, variety pack</span></label>
-        <label><input type="checkbox" data-k="l5"><span>Apples, grapes and baby carrots</span></label>
-        <label><input type="checkbox" data-k="l6"><span>Mayo, mustard and pickles</span></label>
-      </div>
-      <div class="gl-group">
-        <h4>Thursday cookout</h4>
-        <label><input type="checkbox" data-k="c1"><span>Ground beef, 4 lb (about 16 burgers), and 2 packs of buns</span></label>
-        <label><input type="checkbox" data-k="c2"><span>Hot dogs and buns, 1 pack each</span></label>
-        <label><input type="checkbox" data-k="c3"><span>Lettuce, tomatoes, onion and cheese slices</span></label>
-        <label><input type="checkbox" data-k="c4"><span>Baked beans and potato salad</span></label>
-        <label><input type="checkbox" data-k="c5"><span>Grill fuel, if the house doesn't supply it</span></label>
-      </div>
-      <div class="gl-group">
-        <h4>Saturday game night at the house</h4>
-        <label><input type="checkbox" data-k="g1"><span>Taco bar: ground beef, 3 lb; tortillas and shells; shredded cheese, lettuce, salsa, sour cream</span></label>
-        <label><input type="checkbox" data-k="g2"><span>Chips and queso</span></label>
-      </div>
-      <div class="gl-group">
-        <h4>Snacks</h4>
-        <p style="font-size:13px;color:var(--subtle);">Nothing listed yet — add favorites before the Walmart stop.</p>
-      </div>
-      <div class="gl-group">
-        <h4>Drinks</h4>
-        <label><input type="checkbox" data-k="d1"><span>Bottled water, 2 cases, and sparkling water</span></label>
-        <label><input type="checkbox" data-k="d2"><span>Juice boxes</span></label>
-        <label><input type="checkbox" data-k="d3"><span>Beer and wine, or bring from home</span></label>
-        <label><input type="checkbox" data-k="d4"><span>Ice, 2 bags</span></label>
-      </div>
+
     </section>
 
     <!-- 06 EVENTS -->
@@ -457,20 +449,194 @@
     })();
   </script>
   <script>
-    /* Grocery checkboxes persist per-device via localStorage */
+    /* Grocery list builder (ported from McWilliams HQ GroceryTab; saves per-device) */
     (function () {
-      var KEY = 'bvGrocery';
-      var state = {};
-      try { state = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) {}
-      var boxes = document.querySelectorAll('.gl-group input[type="checkbox"][data-k]');
-      boxes.forEach(function (cb) {
-        var k = cb.getAttribute('data-k');
-        if (state[k]) cb.checked = true;
-        cb.addEventListener('change', function () {
-          state[k] = cb.checked;
-          try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
-        });
+      var STORES = [
+        { n: "Walmart",    c: "#0071CE" },
+        { n: "Allen's",    c: "#C06A2D" },
+        { n: "Harps",      c: "#B22234" },
+        { n: "Turnbuckle", c: "#4C8C4A" }
+      ];
+      var COMMON = ["Apples","Avocados","Bananas","Bell Peppers","Blueberries","Broccoli","Carrots","Celery","Cherries","Cilantro","Corn","Cucumbers","Garlic","Ginger","Grapes","Green Beans","Green Onions","Jalapeños","Kale","Lemons","Lettuce","Limes","Mangoes","Mushrooms","Onions","Oranges","Peaches","Pears","Pineapple","Potatoes","Raspberries","Romaine","Spinach","Strawberries","Sweet Potatoes","Tomatoes","Watermelon","Zucchini","Bacon","Chicken Breast","Chicken Thighs","Ground Beef","Ground Turkey","Ham","Hot Dogs","Pork Chops","Salmon","Sausage","Shrimp","Steak","Tilapia","Tuna","Bread","Bagels","Buns","English Muffins","Flour Tortillas","Corn Tortillas","Croissants","Pita Bread","Butter","Cheese","Cheddar","Cream Cheese","Cottage Cheese","Eggs","Greek Yogurt","Heavy Cream","Milk","Almond Milk","Oat Milk","Sour Cream","Yogurt","Parmesan","Mozzarella","Ice Cream","Frozen Pizza","Frozen Vegetables","Frozen Fruit","Waffles","Pizza Rolls","Frozen Burritos","Rice","Pasta","Spaghetti","Penne","Mac and Cheese","Ramen","Oatmeal","Cereal","Granola","Pancake Mix","Peanut Butter","Jelly","Honey","Maple Syrup","Olive Oil","Vegetable Oil","Vinegar","Soy Sauce","Ketchup","Mustard","Mayo","Ranch","Hot Sauce","BBQ Sauce","Salsa","Sriracha","Salt","Pepper","Cinnamon","Cumin","Paprika","Italian Seasoning","Garlic Powder","Onion Powder","Chili Powder","Canned Tomatoes","Tomato Sauce","Tomato Paste","Chicken Broth","Canned Beans","Black Beans","Coconut Milk","Chips","Crackers","Pretzels","Popcorn","Goldfish","Trail Mix","Granola Bars","Fruit Snacks","Cookies","Nuts","Coffee","Tea","Orange Juice","Apple Juice","Sparkling Water","Soda","Gatorade","Lemonade","Paper Towels","Toilet Paper","Napkins","Trash Bags","Dish Soap","Laundry Detergent","Sponges","Aluminum Foil","Plastic Wrap","Ziploc Bags","Hand Soap","Body Wash","Shampoo","Conditioner","Toothpaste","Diapers","Wipes","Dog Food","Cat Food","Cat Litter","Sugar","Brown Sugar","Baking Soda","Baking Powder","Vanilla Extract","Chocolate Chips"];
+
+      function load(k) { try { var v = JSON.parse(localStorage.getItem(k) || "[]"); return Array.isArray(v) ? v : []; } catch (e) { return []; } }
+      function save(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+      function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+      function storeColor(n) { for (var i = 0; i < STORES.length; i++) if (STORES[i].n === n) return STORES[i].c; return "#8A867B"; }
+
+      var LS_ITEMS = "bvTripGrocery-v1";
+      var items = load(LS_ITEMS);
+      var activeStore = "All", showChecked = false, editingId = null;
+
+      var elPills = document.getElementById("gl-pills");
+      var elList = document.getElementById("gl-list");
+      var elHist = document.getElementById("gl-history");
+      var elName = document.getElementById("gl-name");
+      var elSugg = document.getElementById("gl-sugg");
+      var elStore = document.getElementById("gl-store");
+      var elAdd = document.getElementById("gl-addbtn");
+      if (!elPills) return;
+
+      STORES.forEach(function (s) {
+        var o = document.createElement("option");
+        o.textContent = s.n; elStore.appendChild(o);
       });
+
+      function setItems(next) { items = next; save(LS_ITEMS, items); render(); }
+
+      function fmtTime(iso) {
+        var d = new Date(iso);
+        return d.toLocaleDateString("en-US", { month: "short", day: "numeric" }) +
+          " at " + d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+      }
+
+      function btn(txt, title, fn) {
+        var b = document.createElement("button");
+        b.type = "button"; b.className = "gl-iconbtn"; b.textContent = txt; b.title = title;
+        b.addEventListener("click", fn); return b;
+      }
+
+      function renderPills() {
+        elPills.innerHTML = "";
+        var needed = items.filter(function (i) { return !i.got; });
+        var all = document.createElement("button");
+        all.type = "button";
+        all.textContent = "All (" + needed.length + ")";
+        if (activeStore === "All") all.className = "on";
+        all.addEventListener("click", function () { activeStore = "All"; render(); });
+        elPills.appendChild(all);
+        STORES.forEach(function (s) {
+          var n = needed.filter(function (i) { return i.store === s.n; }).length;
+          var b = document.createElement("button");
+          b.type = "button";
+          b.textContent = s.n + (n > 0 ? " (" + n + ")" : "");
+          if (activeStore === s.n) { b.className = "on"; b.style.background = s.c; b.style.borderColor = s.c; }
+          b.addEventListener("click", function () { activeStore = s.n; render(); });
+          elPills.appendChild(b);
+        });
+      }
+
+      function rowFor(i) {
+        if (editingId === i.id) {
+          var wrap = document.createElement("div"); wrap.className = "gl-edit";
+          var inp = document.createElement("input"); inp.value = i.name;
+          var sel = document.createElement("select");
+          STORES.forEach(function (s) { var o = document.createElement("option"); o.textContent = s.n; if (s.n === i.store) o.selected = true; sel.appendChild(o); });
+          var saveB = document.createElement("button"); saveB.type = "button"; saveB.className = "save"; saveB.textContent = "Save";
+          var cancel = document.createElement("button"); cancel.type = "button"; cancel.className = "cancel"; cancel.textContent = "Cancel";
+          function commit() {
+            if (!inp.value.trim()) return;
+            setItems(items.map(function (x) { return x.id === i.id ? Object.assign({}, x, { name: inp.value.trim(), store: sel.value }) : x; }));
+            editingId = null; render();
+          }
+          inp.addEventListener("keydown", function (e) { if (e.key === "Enter") commit(); });
+          saveB.addEventListener("click", commit);
+          cancel.addEventListener("click", function () { editingId = null; render(); });
+          wrap.appendChild(inp); wrap.appendChild(sel); wrap.appendChild(saveB); wrap.appendChild(cancel);
+          setTimeout(function () { inp.focus(); }, 0);
+          return wrap;
+        }
+        var row = document.createElement("div"); row.className = "gl-row" + (i.got ? " done" : "");
+        var check = document.createElement("div"); check.className = "gl-check" + (i.got ? " done" : "");
+        check.textContent = i.got ? "✓" : "";
+        check.addEventListener("click", function () {
+          var nowGot = !i.got;
+          setItems(items.map(function (x) { return x.id === i.id ? Object.assign({}, x, { got: nowGot, checkedAt: nowGot ? new Date().toISOString() : null }) : x; }));
+        });
+        var name = document.createElement("div"); name.className = "gl-name";
+        name.textContent = i.name;
+        if (i.got && i.checkedAt) {
+          var t = document.createElement("div"); t.className = "gl-time"; t.textContent = fmtTime(i.checkedAt);
+          name.appendChild(t);
+        }
+        var chip = document.createElement("span"); chip.className = "gl-storechip";
+        chip.textContent = i.store || "Any"; chip.style.background = storeColor(i.store);
+        row.appendChild(check); row.appendChild(name); row.appendChild(chip);
+        if (!i.got) {
+          row.appendChild(btn("↑", "Move to top", function () {
+            var rest = items.filter(function (x) { return x.id !== i.id; });
+            setItems([i].concat(rest));
+          }));
+          row.appendChild(btn("✎", "Edit", function () { editingId = i.id; render(); }));
+        } else {
+          row.appendChild(btn("↩", "Restore to list", function () {
+            setItems(items.map(function (x) { return x.id === i.id ? Object.assign({}, x, { got: false, checkedAt: null }) : x; }));
+          }));
+        }
+        row.appendChild(btn("×", "Delete", function () {
+          setItems(items.filter(function (x) { return x.id !== i.id; }));
+        }));
+        return row;
+      }
+
+      function render() {
+        renderPills();
+        elList.innerHTML = "";
+        var needed = items.filter(function (i) { return !i.got; });
+        var shown = activeStore === "All" ? needed : needed.filter(function (i) { return i.store === activeStore; });
+        if (shown.length === 0) {
+          var e = document.createElement("div"); e.className = "gl-empty";
+          e.textContent = needed.length === 0 ? "List is empty — add items below" : "Nothing for this store";
+          elList.appendChild(e);
+        }
+        shown.forEach(function (i) { elList.appendChild(rowFor(i)); });
+
+        elHist.innerHTML = "";
+        var got = items.filter(function (i) { return i.got; });
+        if (got.length) {
+          var tog = document.createElement("button"); tog.type = "button"; tog.className = "gl-hist-toggle";
+          var chev = document.createElement("span"); chev.textContent = showChecked ? "▾" : "▸";
+          var lbl = document.createElement("span");
+          lbl.textContent = got.length + " checked item" + (got.length !== 1 ? "s" : "");
+          tog.appendChild(chev); tog.appendChild(lbl);
+          if (showChecked) {
+            var clr = document.createElement("span"); clr.className = "clear"; clr.textContent = "Clear all";
+            clr.addEventListener("click", function (e) {
+              e.stopPropagation();
+              setItems(items.filter(function (i) { return !i.got; }));
+            });
+            tog.appendChild(clr);
+          }
+          tog.addEventListener("click", function () { showChecked = !showChecked; render(); });
+          elHist.appendChild(tog);
+          if (showChecked) {
+            got.sort(function (a, b) { return (b.checkedAt || "").localeCompare(a.checkedAt || ""); })
+               .forEach(function (i) { elHist.appendChild(rowFor(i)); });
+          }
+        }
+      }
+
+      /* suggestions */
+      function renderSugg() {
+        var q = elName.value.trim().toLowerCase();
+        elSugg.innerHTML = "";
+        if (q.length < 2) { elSugg.hidden = true; return; }
+        var past = items.map(function (i) { return i.name; });
+        var seen = {}, all = past.concat(COMMON).filter(function (s) {
+          var k = s.toLowerCase();
+          if (seen[k]) return false; seen[k] = 1;
+          return k.indexOf(q) !== -1 && k !== q;
+        }).slice(0, 6);
+        if (!all.length) { elSugg.hidden = true; return; }
+        all.forEach(function (s) {
+          var d = document.createElement("div"); d.textContent = s;
+          d.addEventListener("mousedown", function (e) { e.preventDefault(); elName.value = s; elSugg.hidden = true; elName.focus(); });
+          elSugg.appendChild(d);
+        });
+        elSugg.hidden = false;
+      }
+      function add() {
+        var n = elName.value.trim();
+        if (!n) return;
+        setItems(items.concat([{ id: uid(), name: n, store: elStore.value, got: false, checkedAt: null }]));
+        elName.value = ""; elSugg.hidden = true; elName.focus();
+      }
+      elName.addEventListener("input", renderSugg);
+      elName.addEventListener("keydown", function (e) { if (e.key === "Enter") add(); });
+      elName.addEventListener("blur", function () { setTimeout(function () { elSugg.hidden = true; }, 150); });
+      elAdd.addEventListener("click", add);
+
+      render();
     })();
   </script>
 </body>
