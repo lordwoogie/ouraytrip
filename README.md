@@ -1,32 +1,25 @@
-# Ouray Family Trip Site
+# Family Trip Site
 
-A small 3-page static site for the OKC → Ouray, CO road trip (June 23–29, 2026).
+Static family site on Vercel with one serverless endpoint.
 
 ## Pages
 
-| URL        | File                  | Audience              | Purpose                                      |
-|------------|-----------------------|-----------------------|----------------------------------------------|
-| `/`        | `public/index.html`   | Whole family          | Trip dossier: itinerary, map, bookings, crew |
-| `/ripley`  | `public/ripley.html`  | Hudson (dog-sitter)   | Ripley's house & care guide                  |
-| `/owen`    | `public/owen.html`    | Greg & Stephanie      | Owen's feeding/care schedule (printable)     |
+| URL        | File                  | Purpose                                            |
+|------------|-----------------------|----------------------------------------------------|
+| `/`        | `public/index.html`   | Bella Vista trip guide + shared grocery list       |
+| `/owen`    | `public/owen.html`    | Owen's care schedule                               |
+| `/ripley`  | `public/ripley.html`  | Ripley's house & care guide (archive)              |
+| `/trip`    | `public/trip.html`    | OKC → Ouray trip, June 2026 (archive)              |
 
-All three pages cross-link in their footers/headers. `vercel.json` enables
-clean URLs, so `/ripley` and `/owen` work without the `.html`.
+## Shared grocery list
+
+`api/kv.js` is a Vercel serverless function (GET `?key=` / POST `{key, value}`)
+backed by whichever store is connected to the project: Upstash/Vercel KV
+(`KV_REST_API_URL`/`KV_REST_API_TOKEN` or `UPSTASH_*`) or Vercel Blob
+(`BLOB_READ_WRITE_TOKEN`). Without credentials it returns 503 and the page
+falls back to per-device localStorage.
 
 ## Deploy
 
-From this folder:
-
-```bash
-vercel          # preview deploy
-vercel --prod   # production deploy
-```
-
-Or push to a Git repo connected to Vercel. No build step — it's static.
-
-## Notes
-
-- The trip map uses Leaflet from cdnjs (no build needed).
-- Owen's page is designed to print to one page (Cmd/Ctrl-P → Save as PDF).
-  The top nav bar is hidden automatically when printing.
-- To re-deploy after edits, just save the file and run `vercel --prod` again.
+Push to `main` — Vercel auto-deploys. `vercel.json` enables clean URLs; no
+build step.
