@@ -217,9 +217,34 @@
       <div class="hero-sub">Lake house weekend · Thu Nov 12 – Sun Nov 15, 2026</div>
     </header>
 
+    <!-- GROCERY LIST -->
+    <section class="section">
+      <div class="section-head"><span class="section-num">01</span><h2 class="section-title">Grocery List</h2></div>
+      <p class="lead">Build the trip list here: add items (it suggests as you type), tag each one by store, and check things off as you shop. Checked items drop into a history you can restore from. It's one shared family list — everyone sees the same thing, and ⟳ Refresh pulls the latest.</p>
+
+      <div class="card" id="gl-app">
+        <div class="gl-top">
+          <span class="gl-status" id="gl-status">Loading…</span>
+          <button type="button" class="gl-refresh" id="gl-refresh">⟳ Refresh</button>
+        </div>
+        <div class="gl-pills" id="gl-pills"></div>
+        <div id="gl-list"></div>
+        <div class="gl-addrow">
+          <span class="gl-plus">+</span>
+          <div class="gl-inputwrap">
+            <input id="gl-name" type="text" placeholder="List item" autocomplete="off">
+            <div id="gl-sugg" class="gl-sugg" hidden></div>
+          </div>
+          <select id="gl-store" aria-label="Store"></select>
+          <button type="button" id="gl-addbtn">Add</button>
+        </div>
+        <div id="gl-history"></div>
+      </div>
+    </section>
+
     <!-- 01 TRIP BASICS -->
     <section class="section">
-      <div class="section-head"><span class="section-num">01</span><h2 class="section-title">Trip Basics</h2></div>
+      <div class="section-head"><span class="section-num">02</span><h2 class="section-title">Trip Basics</h2></div>
       <p class="lead">We're staying at a lake house in Bella Vista from Thursday, Nov. 12 to Sunday, Nov. 15. Downtown Bentonville is about 20 minutes away.</p>
       <div class="card">
         <div class="meta-row"><span class="meta-label">Address</span><span class="meta-val"><a href="https://www.google.com/maps/search/?api=1&amp;query=30%20Brittany%20Lane%2C%20Bella%20Vista%2C%20AR">30 Brittany Lane, Bella Vista, AR</a> (VRBO, hosted by Jamie)</span></div>
@@ -239,14 +264,14 @@
 
     <!-- 02 GETTING THERE -->
     <section class="section">
-      <div class="section-head"><span class="section-num">02</span><h2 class="section-title">Getting There</h2></div>
+      <div class="section-head"><span class="section-num">03</span><h2 class="section-title">Getting There</h2></div>
       <p class="lead">From OKC it's about 240 miles and roughly 4 hours: I-44 east to Tulsa, US-412 across into Arkansas, then I-49 north to Bella Vista — with the Walmart grocery stop right off the highway on the way in. <a href="https://www.google.com/maps/dir/?api=1&amp;origin=Oklahoma+City,+OK&amp;destination=30+Brittany+Lane,+Bella+Vista,+AR">Open turn-by-turn directions →</a></p>
       <div id="drive-map"></div>
     </section>
 
     <!-- 03 WEEKEND OPTIONS -->
     <section class="section">
-      <div class="section-head"><span class="section-num">03</span><h2 class="section-title">Weekend Options</h2></div>
+      <div class="section-head"><span class="section-num">04</span><h2 class="section-title">Weekend Options</h2></div>
       <div class="locked">
         <span>🔒 Check-in Thu 4 PM</span>
         <span>🔒 Razorbacks Sat 6:45 PM</span>
@@ -268,7 +293,7 @@
 
     <!-- 03 THINGS TO DO -->
     <section class="section">
-      <div class="section-head"><span class="section-num">04</span><h2 class="section-title">Things to Do</h2></div>
+      <div class="section-head"><span class="section-num">05</span><h2 class="section-title">Things to Do</h2></div>
       <p class="lead">Everything here is within about 25 minutes of the house and works for a group with babies and grandparents.</p>
       <div class="tablewrap"><table>
         <tr><th>Place</th><th>Best for</th><th>Good to know</th></tr>
@@ -284,7 +309,7 @@
 
     <!-- 04 RESTAURANTS -->
     <section class="section">
-      <div class="section-head"><span class="section-num">05</span><h2 class="section-title">Restaurants for All 11 of Us</h2></div>
+      <div class="section-head"><span class="section-num">06</span><h2 class="section-title">Restaurants for All 11 of Us</h2></div>
       <p class="lead">For any sit-down meal, call a day ahead and ask for a corner table, two high chairs and a booster. On Friday and Saturday, aim to eat before 6 PM; the Razorbacks kick off at 6:45 PM Saturday, so sports bars will be packed that evening.</p>
       <div class="tablewrap"><table>
         <tr><th>Restaurant</th><th>Why it works</th><th>Booking</th><th>Phone</th></tr>
@@ -302,7 +327,7 @@
 
     <!-- 05 GROCERIES -->
     <section class="section">
-      <div class="section-head"><span class="section-num">06</span><h2 class="section-title">Grocery Stores</h2></div>
+      <div class="section-head"><span class="section-num">07</span><h2 class="section-title">Grocery Stores</h2></div>
       <p class="lead">Coming up I-49 from Oklahoma City, the Walmart Neighborhood Market on Central Ave in Bentonville is the cheapest stop for bulk staples and baby supplies. Allen's, Harps and Turnbuckle Farm are all within about 10 minutes of the house for anything else.</p>
       <div class="tablewrap"><table>
         <tr><th>Store</th><th>Hours</th><th>Order online?</th><th>Good to know</th></tr>
@@ -312,33 +337,11 @@
         <tr><td>Turnbuckle Farm (821 NW McNelly Rd, Bentonville)</td><td>8 AM to 8 PM; Sunday from 9 AM</td><td>No</td><td>Farm stand with local eggs, honey and sourdough, plus a breakfast food truck. Kids can feed the ducks.</td></tr>
       </table></div>
 
-      <h3 class="gl-head">Grocery list</h3>
-      <p class="lead">Build the trip list here: add items (it suggests as you type), tag each one by store, and check things off as you shop. Checked items drop into a history you can restore from. The list saves on each person's own device.</p>
-
-      <div class="card" id="gl-app">
-        <div class="gl-top">
-          <span class="gl-status" id="gl-status">Loading…</span>
-          <button type="button" class="gl-refresh" id="gl-refresh">⟳ Refresh</button>
-        </div>
-        <div class="gl-pills" id="gl-pills"></div>
-        <div id="gl-list"></div>
-        <div class="gl-addrow">
-          <span class="gl-plus">+</span>
-          <div class="gl-inputwrap">
-            <input id="gl-name" type="text" placeholder="List item" autocomplete="off">
-            <div id="gl-sugg" class="gl-sugg" hidden></div>
-          </div>
-          <select id="gl-store" aria-label="Store"></select>
-          <button type="button" id="gl-addbtn">Add</button>
-        </div>
-        <div id="gl-history"></div>
-      </div>
-
     </section>
 
     <!-- 06 EVENTS -->
     <section class="section">
-      <div class="section-head"><span class="section-num">07</span><h2 class="section-title">Events While We're There</h2></div>
+      <div class="section-head"><span class="section-num">08</span><h2 class="section-title">Events While We're There</h2></div>
       <p class="lead">Saturday, Nov. 14 is the busy day, with three football games plus events in Bentonville. Nothing notable is scheduled Thursday or Friday.</p>
       <div class="tablewrap"><table>
         <tr><th>When (Sat, Nov 14)</th><th>Event</th><th>Notes</th></tr>
@@ -354,7 +357,7 @@
 
     <!-- 07 BARS -->
     <section class="section">
-      <div class="section-head"><span class="section-num">08</span><h2 class="section-title">Bars in Bentonville</h2></div>
+      <div class="section-head"><span class="section-num">09</span><h2 class="section-title">Bars in Bentonville</h2></div>
       <p class="lead">Most of these are downtown, about 20 minutes from the house, so plan on a designated driver or rideshare.</p>
       <div class="tablewrap"><table>
         <tr><th>Bar</th><th>Type</th><th>Good to know</th></tr>
@@ -377,7 +380,7 @@
 
     <!-- 08 GOOD TO KNOW -->
     <section class="section">
-      <div class="section-head"><span class="section-num">09</span><h2 class="section-title">Good to Know</h2></div>
+      <div class="section-head"><span class="section-num">10</span><h2 class="section-title">Good to Know</h2></div>
       <div class="card">
         <ul class="notes">
           <li><strong>Water safety:</strong> the pool and lake sit right off the patio. With a 3-year-old and two babies on the move, keep someone on water watch whenever the doors are open, and keep the hot tub covered.</li>
@@ -391,7 +394,7 @@
 
     <!-- SOURCES -->
     <section class="section">
-      <div class="section-head"><span class="section-num">10</span><h2 class="section-title">Sources</h2></div>
+      <div class="section-head"><span class="section-num">11</span><h2 class="section-title">Sources</h2></div>
       <ul class="notes sources">
         <li><a href="https://digital-release.nwahomepage.com/?p=2451599">Crystal Bridges 2026 exhibitions</a></li>
         <li><a href="https://www.amazeum.org/about/participation/donations/">Amazeum admission</a></li>
