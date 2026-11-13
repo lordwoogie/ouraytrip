@@ -193,6 +193,13 @@
     .meta-label { flex-basis: 92px; }
   }
 
+  #food-map {
+    width: 100%; height: 420px;
+    background: #E8E3D9;
+    border: 1px solid var(--rule); border-radius: 6px;
+    margin-bottom: 4px;
+  }
+  @media (max-width: 560px) { #food-map { height: 340px; } }
   #drive-map {
     width: 100%; height: 380px;
     background: #E8E3D9;
@@ -311,6 +318,8 @@
     <section class="section">
       <div class="section-head"><span class="section-num">06</span><h2 class="section-title">Restaurants for All 11 of Us</h2></div>
       <p class="lead">For any sit-down meal, call a day ahead and ask for a corner table, two high chairs and a booster. On Friday and Saturday, aim to eat before 6 PM; the Razorbacks kick off at 6:45 PM Saturday, so sports bars will be packed that evening.</p>
+      <div id="food-map"></div>
+      <p class="lead" style="font-size:12.5px;margin-top:8px;">Tap a pin for booking info and directions. Pins are close but approximate — the Directions link in each popup navigates to the exact address.</p>
       <div class="tablewrap"><table>
         <tr><th>Restaurant</th><th>Why it works</th><th>Booking</th><th>Phone</th></tr>
         <tr><td><a href="https://jjsgrill.com/bellavista/">JJ's Grill, Bella Vista</a></td><td>Closest to the house; big, casual, huge menu. Kitchen open until 10 PM Fri to Sun.</td><td>Call ahead</td><td class="phone"><a href="tel:+14798026455">(479) 802-6455</a></td></tr>
@@ -456,6 +465,44 @@
         }).addTo(map).bindPopup('<strong>' + s.name + '</strong>' + s.sub);
       });
       map.fitBounds(line.getBounds(), { padding: [28, 28] });
+    })();
+  </script>
+  <script>
+    /* Restaurant map (Bella Vista + Bentonville) */
+    (function () {
+      var el = document.getElementById('food-map');
+      if (!el) return;
+      if (typeof L === 'undefined') { el.style.display = 'none'; return; }
+      var spots = [
+        { c: [36.4660, -94.2710], name: 'The lake house', sub: '30 Brittany Lane \u00b7 home base', q: '30 Brittany Lane, Bella Vista, AR', home: true },
+        { c: [36.4487, -94.2665], name: "JJ's Grill", sub: 'Call ahead \u00b7 (479) 802-6455', q: "JJ's Grill, 12 Cunningham Corner, Bella Vista, AR" },
+        { c: [36.4452, -94.2155], name: 'Cafe USA', sub: 'Breakfast \u00b7 go early weekends', q: 'Cafe USA, 426 Town Center NE, Bella Vista, AR' },
+        { c: [36.3740, -94.2097], name: 'Onyx Coffee Lab', sub: 'Walk in \u00b7 off the Square', q: 'Onyx Coffee Lab, 100 NW 2nd St, Bentonville, AR' },
+        { c: [36.3712, -94.2088], name: 'Townie Burgers', sub: 'Reserve on Tock \u00b7 (479) 533-1750', q: 'Townie Burgers, 219 S Main St, Bentonville, AR' },
+        { c: [36.3597, -94.2042], name: 'Parlay on 8th', sub: 'Reserve on Tock \u00b7 (479) 326-4520', q: 'Parlay on 8th, 801 SE 8th St, Bentonville, AR' },
+        { c: [36.3592, -94.1912], name: 'Table au Centre', sub: 'Brunch 9\u20132 \u00b7 (479) 364-0300', q: 'Table au Centre, 909 SE J St, Bentonville, AR' },
+        { c: [36.3570, -94.1890], name: 'Onyx at The Preserve', sub: 'Reserve on OpenTable \u00b7 (479) 360-5060', q: 'Onyx at The Preserve, 1101 Excellence Dr, Bentonville, AR' },
+        { c: [36.3536, -94.2200], name: 'Bentonville Brewing Co.', sub: 'Walk in \u00b7 kids\u2019 play area', q: 'Bentonville Brewing Company, 901 SW 14th St, Bentonville, AR' },
+        { c: [36.3980, -94.2000], name: 'The Bend', sub: 'Walk in \u00b7 outdoor, weather call', q: 'The Bend NWA, Bentonville, AR' }
+      ];
+      var map = L.map('food-map', { scrollWheelZoom: false, zoomControl: true });
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        maxZoom: 18
+      }).addTo(map);
+      var bounds = [];
+      spots.forEach(function (s) {
+        bounds.push(s.c);
+        L.circleMarker(s.c, {
+          radius: s.home ? 9 : 7,
+          fillColor: s.home ? '#C77F2E' : '#2C5868',
+          color: '#FFFFFF', weight: 2, opacity: 1, fillOpacity: 1
+        }).addTo(map).bindPopup(
+          '<strong>' + s.name + '</strong>' + s.sub +
+          '<br><a href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(s.q) + '" target="_blank" rel="noopener">Directions \u2192</a>'
+        );
+      });
+      map.fitBounds(bounds, { padding: [30, 30] });
     })();
   </script>
   <script>
